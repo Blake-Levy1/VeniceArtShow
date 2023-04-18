@@ -1,5 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <ItemGroup>
+    <ProjectReference Include="..\VeniceArtShow.Models\VeniceArtShow.Models.csproj" />
+    <ProjectReference Include="..\VeniceArtShow.Data\VeniceArtShow.Data.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
