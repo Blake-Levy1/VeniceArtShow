@@ -4,10 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <!-- blake -->
-    <!-- <UserSecretsId>7e172589-5c9d-453b-8455-98e2b5a08ad4</UserSecretsId> -->
-    <!-- mike -->
-    <UserSecretsId>39cb8918-c095-4048-a924-213b8474905d</UserSecretsId>
+    <UserSecretsId>7e172589-5c9d-453b-8455-98e2b5a08ad4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
