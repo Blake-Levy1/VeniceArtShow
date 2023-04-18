@@ -10,4 +10,6 @@ public class ApplicationDbContext : DbContext
     {
 
     }
+
+    public DbSet<ProductEntity> Products { get; set; }
 }
