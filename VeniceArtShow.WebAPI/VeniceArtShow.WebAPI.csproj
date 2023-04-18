@@ -1,14 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>7e172589-5c9d-453b-8455-98e2b5a08ad4</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VeniceArtShow.Data\VeniceArtShow.Data.csproj" />
+    <ProjectReference Include="..\VeniceArtShow.Models\VeniceArtShow.Models.csproj" />
+    <ProjectReference Include="..\VeniceArtShow.Services\VeniceArtShow.Services.csproj" />
   </ItemGroup>
 
 </Project>
