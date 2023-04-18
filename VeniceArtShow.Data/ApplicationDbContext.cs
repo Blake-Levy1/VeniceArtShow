@@ -10,4 +10,5 @@ public class ApplicationDbContext : DbContext
     {
 
     }
+    public DbSet<OrderEntity> Orders { get; set;}
 }
