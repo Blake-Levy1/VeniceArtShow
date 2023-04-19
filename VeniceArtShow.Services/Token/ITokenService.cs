@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-public class ITokenService
+public interface ITokenService
 {
     Task<TokenResponse> GetTokenAsync(TokenRequest model);
 }
