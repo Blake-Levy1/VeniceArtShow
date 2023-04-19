@@ -9,6 +9,8 @@ public class UserEntity : IdentityUser
     public string FirstName { get; set; }
     public string LastName { get; set; }
     [Required]
+    public string Password { get; set; }
+    [Required]
     public DateTime DateCreated { get; set; }
     public string Biography { get; set; }
 
