@@ -15,6 +15,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IMediaService, MediaService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
