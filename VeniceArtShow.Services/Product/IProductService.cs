@@ -6,5 +6,5 @@ using System.Security.Claims;
 
 public interface IProductService
 {
-    
+    Task<IEnumerable<ProductListItem>> GetAllProductsAsync();
 }
