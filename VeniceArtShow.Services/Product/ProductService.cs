@@ -37,4 +37,31 @@ public class ProductService : IProductService
 
         return products;
     }
+
+    public async Task<bool> CreateProductAsync(ProductCreate request)
+    {
+        Guid userGuid = ToGuid(_userId);
+        var productEntity = new ProductEntity
+        {
+            Title = request.Title,
+            ImageUrl = request.ImageUrl,
+            Description = request.Description,
+            Price = request.Price,
+            DateListed = DateTimeOffset.Now,
+            ArtistId = userGuid,
+            MediaId = ?
+        };
+
+        _dbContext.Products.Add(productEntity);
+
+        var numberOfChanges = await _dbContext.SaveChangesAsync();
+        // return numberOfChanges == 1;
+    }
+
+    public static Guid ToGuid(int userId)
+    {
+        byte[] bytes = new byte[16];
+        BitConverter.GetBytes(userId).CopyTo(bytes, 0);
+        return new Guid(bytes);
+    }
 }
