@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
         // public int ProductId { get; set; }
         [Required]
         public int Price { get; set; }
-        [ForeignKey]
+        [ForeignKey(nameof(UserEntity))]
         public int BuyerUserId { get; set; }
         [ForeignKey]
         public int SellerUserId { get; set; }

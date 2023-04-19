@@ -16,7 +16,7 @@ public class ProductEntity
     [Required]
     public string Description { get; set; }
     [ForeignKey(nameof(Artist))]
-    public int ArtistId { get; set; }
+    public Guid ArtistId { get; set; }
     public UserEntity Artist { get; set; }
     [Required]
     public double Price { get; set; }
