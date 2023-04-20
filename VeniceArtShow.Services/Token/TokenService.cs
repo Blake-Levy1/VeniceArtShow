@@ -35,7 +35,7 @@ public class TokenService : ITokenService
 
         var passwordHasher = new PasswordHasher<UserEntity>();
 
-        var verifyPasswordResult = passwordHasher.VerifyHashedPassword(userEntity, userEntity.Password, model.Password);
+        var verifyPasswordResult = passwordHasher.VerifyHashedPassword(userEntity, userEntity.PasswordHash, model.Password);
         if (verifyPasswordResult == PasswordVerificationResult.Failed)
             return null;
 
