@@ -6,5 +6,7 @@ using System.Security.Claims;
 
 public interface IProductService
 {
-    
+    Task<bool> CreateProductAsync(ProductCreate request);
+    Task<IEnumerable<ProductListItem>> GetAllProductsAsync();
+    Task<ProductDetail> GetProductByIdAsync(int productId);
 }

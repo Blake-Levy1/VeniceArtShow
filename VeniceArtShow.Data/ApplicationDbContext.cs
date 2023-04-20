@@ -15,6 +15,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductEntity> Products { get; set; }
     public DbSet<UserEntity> Users { get; set; }
 
+    public DbSet<UserEntity> Users { get; set; }
+    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //This looks/feels like a mess says Mike
