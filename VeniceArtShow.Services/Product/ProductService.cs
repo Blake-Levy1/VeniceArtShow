@@ -62,17 +62,34 @@ public class ProductService : IProductService
                 e.Id == productId && e.ArtistId == _userId
             );
 
-            return productEntity is null ? null : new ProductDetail
-            {
-                Id = productEntity.Id,
-                Title = productEntity.Title,
-                ImageUrl = productEntity.ImageUrl,
-                Description = productEntity.Description,
-                Price = productEntity.Price,
-                DateListed = DateTimeOffset.Now,
-                MediaId = productEntity.MediaId
-                // Media = productEntity.Media
-            };
+        return productEntity is null ? null : new ProductDetail
+        {
+            Id = productEntity.Id,
+            Title = productEntity.Title,
+            ImageUrl = productEntity.ImageUrl,
+            Description = productEntity.Description,
+            Price = productEntity.Price,
+            DateListed = DateTimeOffset.Now,
+            MediaId = productEntity.MediaId
+            // Media = productEntity.Media
+        };
+    }
+
+    public async Task<bool> UpdateProductAsync (ProductUpdate request)
+    {
+        var productEntity = await _dbContext.Products.FindAsync(request.Id);
+
+        if (productEntity?.ArtistId != _userId)
+            return false;
+
+        productEntity.Title = request.Title;
+        productEntity.ImageUrl = request.ImageUrl;
+        productEntity.Description = request.Description;
+        productEntity.Price = request.Price;
+        productEntity.MediaId = request.MediaId;
+
+        var numberOfChanges = await _dbContext.SaveChangesAsync();
+        return numberOfChanges == 1;
     }
 
     private void SetUserId()
