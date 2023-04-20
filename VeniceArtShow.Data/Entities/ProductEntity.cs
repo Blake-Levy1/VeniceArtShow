@@ -15,6 +15,7 @@ public class ProductEntity
     public string ImageUrl { get; set; }
     [Required]
     public string Description { get; set; }
+    
     [ForeignKey(nameof(Artist))]
     public string ArtistId { get; set; }
     public UserEntity Artist { get; set; }

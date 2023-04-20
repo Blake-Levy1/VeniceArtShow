@@ -10,9 +10,8 @@ public class UserRegister
     public string FirstName { get; set; }
     public string LastName { get; set; }
     [Required]
-    public string Password { get; set; }
-    [Compare("Password",
-        ErrorMessage = "Password does not match")]
+    public string PasswordHash{ get; set; }
+    [Compare("PasswordHash", ErrorMessage = "Password does not match. Are you an having a bad typing day?")]
     public string ConfirmPassword { get; set; }
     [Required]
     public DateTime DateCreated { get; set; }
