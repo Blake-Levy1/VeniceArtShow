@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class ProductService : IProductService
 {
-    private Guid _userId;
+    private string _userId;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationDbContext _dbContext;
     public ProductService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
@@ -77,6 +77,7 @@ public class ProductService : IProductService
 
     public async Task<bool> UpdateProductAsync (ProductUpdate request)
     {
+        SetUserId();
         var productEntity = await _dbContext.Products.FindAsync(request.Id);
 
         if (productEntity?.ArtistId != _userId)
@@ -92,6 +93,23 @@ public class ProductService : IProductService
         return numberOfChanges == 1;
     }
 
+    public async Task<bool> DeleteProductAsync(int productId)
+    {
+        SetUserId();
+        var productEntity = await _dbContext.Products.FindAsync(productId);
+
+        if (productEntity?.ArtistId != _userId)
+            return false;
+
+        _dbContext.Products.Remove(productEntity);
+        return await _dbContext.SaveChangesAsync() == 1;
+    }
+
+    // public async Task<IEnumerable<ProductListItem>> SearchProductByTitle(string productTitle)
+    // {
+
+    // }
+
     private void SetUserId()
     {
         var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
@@ -102,9 +120,10 @@ public class ProductService : IProductService
             throw new Exception("Attempted to build ProductService without Id Claim.");
         } else 
         {
-            _userId = Guid.Parse(value);
+            _userId = value;
         }
     }
+
 //     public static Guid ToGuid(int userId)
 //     {
 //         byte[] bytes = new byte[16];
