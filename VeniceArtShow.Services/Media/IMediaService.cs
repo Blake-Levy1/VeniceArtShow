@@ -4,7 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-public class IMediaService
+public interface IMediaService
 {
+    Task<bool> CreateMediaAsync(MediaCreate model);
 
+    Task<bool> UpdateMediaAsync(MediaUpdate model);
+
+    Task<bool> DeleteMediaAsync(int id);
 }

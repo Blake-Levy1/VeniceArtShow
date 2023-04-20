@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 
 public class UserEntity : IdentityUser
 {
-
     public string FirstName { get; set; }
     public string LastName { get; set; }
     [Required]
@@ -17,5 +16,4 @@ public class UserEntity : IdentityUser
     // Following 14.03 under 'UserEntity'
     public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();
     public virtual  List<OrderEntity> Orders {get; set; } = new List<OrderEntity>();
-
 }
