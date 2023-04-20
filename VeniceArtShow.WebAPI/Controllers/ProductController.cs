@@ -14,7 +14,7 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-    [HttpGet]
+    [HttpGet("AllProducts")]
     public async Task<IActionResult> GetAllProducts()
     {
         var products = await _productService.GetAllProductsAsync();
@@ -60,5 +60,33 @@ public class ProductController : ControllerBase
         return await _productService.DeleteProductAsync(productId)
         ? Ok($"Product {productId} was deleted successfully.")
         : BadRequest($"Product {productId} could not be deleted.");
+    }
+
+    [HttpGet("{productTitle:string}")]
+    public async Task<IActionResult> SearchProductByTitle([FromRoute] string productTitle)
+    {
+        var products = await _productService.SearchProductByTitle(productTitle);
+        return Ok(products);
+    }
+
+    [HttpGet("productMediaId:int")]
+    public async Task<IActionResult> SearchProductByMediaId([FromRoute] int mediaId)
+    {
+        var products = await _productService.SearchProductByMediaId(mediaId);
+        return Ok(products);
+    }
+
+    [HttpGet("{productPrice:double}")]
+    public async Task<IActionResult> SearchProductByPrice([FromRoute] double price)
+    {
+        var products = await _productService.SearchProductByPrice(price);
+        return Ok(products);
+    }
+
+    [HttpGet("{product:ArtistId:string}")]
+    public async Task<IActionResult> SearchProductByArtistId([FromRoute] string artistId)
+    {
+        var products = await _productService.SearchProductByArtistId(artistId);
+        return Ok(products);
     }
 }
