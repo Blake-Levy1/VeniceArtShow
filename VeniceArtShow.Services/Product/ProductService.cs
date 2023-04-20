@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class ProductService : IProductService
 {
-    private Guid _userId;
+    private string _userId;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationDbContext _dbContext;
     public ProductService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
@@ -85,7 +85,7 @@ public class ProductService : IProductService
             throw new Exception("Attempted to build ProductService without Id Claim.");
         } else 
         {
-            _userId = Guid.Parse(value);
+            _userId = value;
         }
     }
 //     public static Guid ToGuid(int userId)
