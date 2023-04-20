@@ -35,4 +35,14 @@ public class ProductController : ControllerBase
 
         return BadRequest("Product could not be created.");
     }
+
+    [HttpGet("{productId:int}")]
+    public async Task<IActionResult> GetProductById([FromRoute] int productId)
+    {
+        var detail = await _productService.GetProductByIdAsync(productId);
+
+        return detail is not null
+            ? Ok(detail)
+            : NotFound();
+    }
 }

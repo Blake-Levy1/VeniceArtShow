@@ -24,5 +24,5 @@ public class ProductEntity
     public DateTimeOffset DateListed { get; set; }
     [ForeignKey(nameof(Media))]
     public int MediaId { get; set; }
-    public MediaEntity Media { get; set; }
+    public virtual MediaEntity Media { get; set; }
 }
