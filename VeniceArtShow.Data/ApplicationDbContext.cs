@@ -16,9 +16,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProductEntity> Products { get; set; }
 
     public DbSet<UserEntity> Users { get; set; }
-    public DbSet<MediaEntity> Media { get; set; }
 
-    public DbSet<UserEntity> Users { get; set; }
 
     // protected override void OnModelCreating(ModelBuilder modelBuilder)
     // {
