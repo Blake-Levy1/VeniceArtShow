@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 public class OrderEntity
 {
+    public readonly string Title;
+    public readonly DateTimeOffset CreatedUtc;
+
     [Key]
     public int Id { get; set; }
 
