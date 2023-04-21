@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 public class UserRegister
 {
     [Required]
-    public string UserName { get; set; }
+    public string Username { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     [Required]
     public string Email { get; set; }
     [Required]
     public string Password{ get; set; }
-    [Compare("Password", ErrorMessage = "Password does not match. Are you an having a bad typing day?")]
+    [Compare("Password", ErrorMessage = "Password does not match.")]
     public string ConfirmPassword { get; set; }
     public string Biography { get; set; }
 }
