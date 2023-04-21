@@ -12,9 +12,11 @@ using Microsoft.AspNetCore.Authorization;
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
-    public OrderController(IOrderService orderService)
+    private readonly ITokenService _tokenService;
+    public OrderController(IOrderService orderService, ITokenService tokenService)
     {
         _orderService = orderService;
+        _tokenService = tokenService;
     }
     //Post api/Order
     [HttpPost]
@@ -29,16 +31,16 @@ public class OrderController : ControllerBase
     }
 
     // PUT api/Note
-[HttpPut]
-public async Task<IActionResult> UpdateNoteById([FromBody] OrderUpdate request)
-{
-    if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+    [HttpPut]
+    public async Task<IActionResult> UpdateNoteById([FromBody] OrderUpdate request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
         return await _orderService.UpdateOrderAsync(request)
             ? Ok("Note updated successfullly.")
             : BadRequest("The Order could not be updated.");
-}
+    }
 
     //Get api/Order
     [HttpGet]
@@ -47,4 +49,62 @@ public async Task<IActionResult> UpdateNoteById([FromBody] OrderUpdate request)
         var orders = await _orderService.GetAllOrdersAsync();
         return Ok(orders);
     }
+
+    [Authorize]
+    [HttpGet("{userId:int}")]
+    public async Task<IActionResult> GetOrderByBuyerId([FromRoute] int buyerId)
+    {
+        var userDetail = await _orderService.GetAllOrdersAsync();
+        if (userDetail is null)
+        {
+            return NotFound();
+        }
+        return Ok(userDetail);
+    }
+    [Authorize]
+    [HttpGet("{userId:string}")]
+    public async Task<IActionResult> GetOrderByArtistId([FromRoute] string artistId)
+    {
+        var userDetail = await _orderService.GetOrdersByArtistIdAsync(artistId);
+        if (userDetail is null)
+        {
+            return NotFound();
+        }
+        return Ok(userDetail);
+    }
+    [Authorize]
+    [HttpGet("{userId:int}")]
+    public async Task<IActionResult> GetOrdersByProductIdAsync([FromRoute]int productId)
+    {
+        var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
+        if (userDetail is null)
+        {
+            return BadRequest("Order not found. (Chaos results.)");
+        }
+        return Ok(userDetail);
+    }
+    [Authorize]
+    [HttpGet("{userId:DateTimeOffset}")]
+    public async Task<IActionResult> GetOrdersByPurchaseDate(DateTimeOffset createdUtc)
+    {
+        var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
+        if (userDetail is null)
+        {
+            return NotFound();
+        }
+        return Ok(userDetail);
+    }
+
+    [HttpPost("~/api/Token")]
+    public async Task<IActionResult> Token([FromBody] TokenRequest request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var tokenResponse = await _tokenService.GetTokenAsync(request);
+        if (tokenResponse is null)
+            return BadRequest("Invalid username or password.");
+        return Ok(tokenResponse);
+    }
+
 }

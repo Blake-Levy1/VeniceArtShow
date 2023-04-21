@@ -10,5 +10,6 @@ using System.ComponentModel.DataAnnotations;
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public string ArtistId { get; set; }
         public  DateTimeOffset CreatedUtc { get; set; }
     }
