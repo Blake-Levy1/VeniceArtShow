@@ -50,7 +50,7 @@ public class OrderController : ControllerBase
         return Ok(orders);
     }
 
-    [Authorize]
+    // [Authorize]
     [HttpGet("{userId:int}")]
     public async Task<IActionResult> GetOrderByBuyerId([FromRoute] int buyerId)
     {
@@ -61,7 +61,7 @@ public class OrderController : ControllerBase
         }
         return Ok(userDetail);
     }
-    [Authorize]
+    // [Authorize]
     [HttpGet("{userId:string}")]
     public async Task<IActionResult> GetOrderByArtistId([FromRoute] string artistId)
     {
@@ -71,40 +71,41 @@ public class OrderController : ControllerBase
             return NotFound();
         }
         return Ok(userDetail);
-    }
-    [Authorize]
-    [HttpGet("{userId:int}")]
-    public async Task<IActionResult> GetOrdersByProductIdAsync([FromRoute]int productId)
-    {
-        var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
-        if (userDetail is null)
+        // }
+        // [Authorize]
+        [HttpGet("{userId:int}")]
+        public async Task<IActionResult> GetOrdersByProductIdAsync([FromRoute] int productId)
         {
-            return BadRequest("Order not found. (Chaos results.)");
+            var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
+            if (userDetail is null)
+            {
+                return BadRequest("Order not found. (Chaos results.)");
+            }
+            return Ok(userDetail);
         }
-        return Ok(userDetail);
-    }
-    [Authorize]
-    [HttpGet("{userId:DateTimeOffset}")]
-    public async Task<IActionResult> GetOrdersByPurchaseDate(DateTimeOffset createdUtc)
-    {
-        var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
-        if (userDetail is null)
+        // [Authorize]
+        [HttpGet("{userId:DateTimeOffset}")]
+        public async Task<IActionResult> GetOrdersByPurchaseDate(DateTimeOffset createdUtc)
         {
-            return NotFound();
+            var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
+            if (userDetail is null)
+            {
+                return NotFound();
+            }
+            return Ok(userDetail);
         }
-        return Ok(userDetail);
+
+        [HttpPost("~/api/Token")]
+        public async Task<IActionResult> Token([FromBody] TokenRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var tokenResponse = await _tokenService.GetTokenAsync(request);
+            if (tokenResponse is null)
+                return BadRequest("Invalid username or password.");
+            return Ok(tokenResponse);
+        }
+
     }
-
-    [HttpPost("~/api/Token")]
-    public async Task<IActionResult> Token([FromBody] TokenRequest request)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var tokenResponse = await _tokenService.GetTokenAsync(request);
-        if (tokenResponse is null)
-            return BadRequest("Invalid username or password.");
-        return Ok(tokenResponse);
-    }
-
 }
