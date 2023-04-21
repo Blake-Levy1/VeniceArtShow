@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 
 public class UserRegister
 {
+    [Required]
+    public string Username { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
     [Required]
-    public string PasswordHash{ get; set; }
-    [Compare("PasswordHash", ErrorMessage = "Password does not match. Are you an having a bad typing day?")]
-    public string ConfirmPassword { get; set; }
+    public string Email { get; set; }
     [Required]
-    public DateTime DateCreated { get; set; }
+    public string Password{ get; set; }
+    [Compare("Password", ErrorMessage = "Password does not match.")]
+    public string ConfirmPassword { get; set; }
     public string Biography { get; set; }
 }
