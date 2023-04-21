@@ -60,8 +60,4 @@ public class MediaService : IMediaService
         return await _dbContext.SaveChangesAsync() == 1;
     }
 
-    public Task<bool> UpdateMediaAsync(MediaUpdate model)
-    {
-        throw new NotImplementedException();
-    }
 }

@@ -8,55 +8,69 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 [Route("api/[controller]")]
 
-public class UserController : Controller
+public class UserController : ControllerBase
 {
-    private UserManager<UserEntity> userManager;
-
-    public UserController(UserManager<UserEntity> usrMgr)
+    private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
+    public UserController(IUserService userService, ITokenService tokenService)
     {
-        userManager = usrMgr;
+        _userService = userService;
+        _tokenService = tokenService;
     }
-
-    [HttpPost]
-    public async Task<IActionResult> RegisterUser([FromBody] UserEntity user)
-    {
-        if (ModelState.IsValid)
-        {
-            IdentityResult result = await userManager.CreateAsync(user);
-            if (result.Succeeded)
-                return Ok("User was successfully created");
-        }
-        return BadRequest("User could not be created");
-    }
-
-    [HttpPut]
-    public async Task<IActionResult> UpdateUser([FromBody] UserEntity user)
+    [HttpPost("Register")]
+    public async Task<IActionResult> RegisterUser([FromBody] UserRegister model)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        IdentityResult result = await userManager.UpdateAsync(user);
-        if (result.Succeeded)
+        var registerResult = await _userService.RegisterUserAsync(model);
+        if (registerResult)
         {
-            return Ok("Update was successful");
+            return Ok("User was registered.");
         }
-        return BadRequest("Update could not be completed");
+        return BadRequest("User could not be registered.");
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteUser(UserEntity user)
+    [HttpPut("Update")]
+    public async Task<IActionResult> UpdateUser([FromBody] UserRegister model)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
-        IdentityResult result = await userManager.DeleteAsync(user);
-        if (result.Succeeded)
+        
+        return await _userService.UpdateUserAsync(model)
+            ? Ok("User updated successfully.")
+            : BadRequest("User could not be updated");
+    }
+    
+    [HttpGet("{userId:int}")]
+    public async Task<IActionResult> GetUserById([FromRoute] int userId)
+    {
+        var userDetail = await _userService.GetUserByIdAsync(userId);
+        if (userDetail is null)
         {
-            return Ok("User deleted successfuly");
+            return NotFound();
         }
-        return BadRequest("User could not be completed");
+        return Ok(userDetail);
+    }
+
+    [HttpDelete("Delete")]
+    public async Task<IActionResult> DeleteUser([FromBody] int userId)
+    {
+        return await _userService.DeleteUserAsync(userId)
+        ? Ok($"User {userId} was deleted successfully.")
+        : BadRequest($"User {userId} could not be deleted.")
+    }
+
+    [HttpPost("~/api/Token")]
+    public async Task<IActionResult> Token([FromBody] TokenRequest request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        var tokenResponse = await _tokenService.GetTokenAsync(request);
+        if (tokenResponse is null)
+            return BadRequest("Invalid username or password.");
+        return Ok(tokenResponse);
     }
 }
 
