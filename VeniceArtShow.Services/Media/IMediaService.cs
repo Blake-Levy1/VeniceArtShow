@@ -8,6 +8,8 @@ public interface IMediaService
 {
     Task<bool> CreateMediaAsync(MediaCreate model);
 
+    Task<IEnumerable<MediaList>> GetAllMediaAsync();
+
     Task<bool> UpdateMediaAsync(MediaUpdate model);
 
     Task<bool> DeleteMediaAsync(int id);
