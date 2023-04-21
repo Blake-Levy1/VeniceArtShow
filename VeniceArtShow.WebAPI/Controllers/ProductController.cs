@@ -62,15 +62,15 @@ public class ProductController : ControllerBase
         : BadRequest($"Product {productId} could not be deleted.");
     }
 
-    [HttpGet("{productTitle:string}")]
-    public async Task<IActionResult> SearchProductByTitle([FromRoute] string productTitle)
+    [HttpGet("ByTitle")]
+    public async Task<IActionResult> SearchProductByTitle([FromBody] string productTitle)
     {
         var products = await _productService.SearchProductByTitle(productTitle);
         return Ok(products);
     }
 
-    [HttpGet("{productMediaId:int}")]
-    public async Task<IActionResult> SearchProductByMediaId([FromRoute] int mediaId)
+    [HttpGet("ByMediaId")]
+    public async Task<IActionResult> SearchProductByMediaId([FromBody] int mediaId)
     {
         var products = await _productService.SearchProductByMediaId(mediaId);
         return Ok(products);
@@ -83,8 +83,8 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("{product:ArtistId:string}")]
-    public async Task<IActionResult> SearchProductByArtistId([FromRoute] string artistId)
+    [HttpGet("ByArtistId")]
+    public async Task<IActionResult> SearchProductByArtistId([FromBody] string artistId)
     {
         var products = await _productService.SearchProductByArtistId(artistId);
         return Ok(products);
