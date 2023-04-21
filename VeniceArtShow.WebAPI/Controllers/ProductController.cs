@@ -14,7 +14,7 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-    [HttpGet]
+    [HttpGet("AllProducts")]
     public async Task<IActionResult> GetAllProducts()
     {
         var products = await _productService.GetAllProductsAsync();
@@ -25,13 +25,10 @@ public class ProductController : ControllerBase
     public async Task<IActionResult> CreateProduct([FromBody] ProductCreate request)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
+
         if (await _productService.CreateProductAsync(request))
-        {
             return Ok("Product created successfully.");
-        }
 
         return BadRequest("Product could not be created.");
     }
@@ -44,5 +41,52 @@ public class ProductController : ControllerBase
         return detail is not null
             ? Ok(detail)
             : NotFound();
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateProductById([FromBody] ProductUpdate request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        return await _productService.UpdateProductAsync(request)
+            ? Ok("Product updated successfully")
+            : BadRequest("Product could not be updated");
+    }
+
+    [HttpDelete("{productId:int}")]
+    public async Task<IActionResult> DeleteProduct([FromRoute] int productId)
+    {
+        return await _productService.DeleteProductAsync(productId)
+        ? Ok($"Product {productId} was deleted successfully.")
+        : BadRequest($"Product {productId} could not be deleted.");
+    }
+
+    [HttpGet("ByTitle")]
+    public async Task<IActionResult> SearchProductByTitle([FromBody] string productTitle)
+    {
+        var products = await _productService.SearchProductByTitle(productTitle);
+        return Ok(products);
+    }
+
+    [HttpGet("ByMediaId")]
+    public async Task<IActionResult> SearchProductByMediaId([FromBody] int mediaId)
+    {
+        var products = await _productService.SearchProductByMediaId(mediaId);
+        return Ok(products);
+    }
+
+    [HttpGet("ByPrice")]
+    public async Task<IActionResult> SearchProductByPrice([FromBody] double lowPrice, double highPrice)
+    {
+        var products = await _productService.SearchProductByPrice(lowPrice, highPrice);
+        return Ok(products);
+    }
+
+    [HttpGet("ByArtistId")]
+    public async Task<IActionResult> SearchProductByArtistId([FromBody] string artistId)
+    {
+        var products = await _productService.SearchProductByArtistId(artistId);
+        return Ok(products);
     }
 }

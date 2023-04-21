@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 
 public class MediaService : IMediaService
 {
-    private readonly ApplicationDbContext _context;
-    public MediaService(ApplicationDbContext context)
+    private readonly ApplicationDbContext _dbContext;
+    public MediaService(ApplicationDbContext dbContext)
     {
-        _context = context;
+        _dbContext = dbContext;
     }
 
     public async Task<bool> CreateMediaAsync(MediaCreate model)
@@ -19,33 +19,45 @@ public class MediaService : IMediaService
             MediaType = model.MediaType
         };
 
-        _context.Medias.Add(entity);
-        var numberOfChanges = await _context.SaveChangesAsync();
+        _dbContext.Medias.Add(entity);
+        var numberOfChanges = await _dbContext.SaveChangesAsync();
 
         return numberOfChanges == 1;
     }
 
-// NOT FINISHED YET
-    // public async Task<bool> UpdateMediaAsync(MediaUpdate model)
-    // {
-    //     var entity = await _context.Medias.FindAsync(model.MediaType);
+    public async Task<IEnumerable<MediaList>> GetAllMediaAsync()
+    {
+        var medias = await _dbContext.Medias
+        .Select(medias => new MediaList
+        {
+            Id = medias.Id,
+            MediaType = medias.MediaType
+        })
+        .ToListAsync();
+        return medias;
+    }
 
-    //     if(MediaEntity?.Id !=)
-    // }
+    public async Task<bool> UpdateMediaAsync(MediaUpdate model)
+    {
+        var entity = await _dbContext.Medias.FindAsync(model.Id);
+        if (entity is null) 
+        {
+            return false;
+        }
+        entity.MediaType = model.MediaType;
+        
+        return (await _dbContext.SaveChangesAsync() == 1);
+    }
 
 
     public async Task<bool> DeleteMediaAsync(int id)
     {
         //Find by MediaId
-        var mediaEntity = await _context.Medias.FindAsync(id);
+        var mediaEntity = await _dbContext.Medias.FindAsync(id);
 
         //Remove MediaType 
-        _context.Medias.Remove(mediaEntity);
-        return await _context.SaveChangesAsync() == 1;
+        _dbContext.Medias.Remove(mediaEntity);
+        return await _dbContext.SaveChangesAsync() == 1;
     }
 
-    public Task<bool> UpdateMediaAsync(MediaUpdate model)
-    {
-        throw new NotImplementedException();
-    }
 }

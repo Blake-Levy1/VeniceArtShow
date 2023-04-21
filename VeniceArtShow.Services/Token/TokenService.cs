@@ -12,11 +12,11 @@ using Microsoft.IdentityModel.Tokens;
 
 public class TokenService : ITokenService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly ApplicationDbContext _dbContext;
     private readonly IConfiguration _configuration;
-    public TokenService(ApplicationDbContext context, IConfiguration configuration)
+    public TokenService(ApplicationDbContext dbContext, IConfiguration configuration)
     {
-        _context = context;
+        _dbContext = dbContext;
         _configuration = configuration;
     }
     public async Task<TokenResponse> GetTokenAsync(TokenRequest model)
@@ -29,13 +29,13 @@ public class TokenService : ITokenService
     private async Task<UserEntity> GetValidUserAsync(TokenRequest model)
     {
         //using Pascal case for UserName because it is pulling from IdentityUser class
-        var userEntity = await _context.Users.FirstOrDefaultAsync(user => user.UserName.ToLower() == model.Username.ToLower());
+        var userEntity = await _dbContext.Users.FirstOrDefaultAsync(user => user.UserName.ToLower() == model.Username.ToLower());
         if (userEntity is null)
             return null;
 
         var passwordHasher = new PasswordHasher<UserEntity>();
 
-        var verifyPasswordResult = passwordHasher.VerifyHashedPassword(userEntity, userEntity.PasswordHash, model.Password);
+        var verifyPasswordResult = passwordHasher.VerifyHashedPassword(userEntity, userEntity.Password, model.Password);
         if (verifyPasswordResult == PasswordVerificationResult.Failed)
             return null;
 
@@ -73,12 +73,12 @@ public class TokenService : ITokenService
     private Claim[] GetClaims(UserEntity user)
     {
         var fullName = $"{user.FirstName} {user.LastName}";
-        var name = !string.IsNullOrWhiteSpace(fullName) ? fullName : user.UserName;
+        var name = !string.IsNullOrWhiteSpace(fullName) ? fullName : user.Username;
 
         var claims = new Claim[]
         {
             new Claim("Id", user.Id.ToString()),
-            new Claim("Username", user.UserName),
+            new Claim("Username", user.Username),
             new Claim("Email", user.Email),
             new Claim("Name", name)
         };
