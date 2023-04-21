@@ -7,6 +7,13 @@ using System.Security.Claims;
     public interface IOrderService
     {
         Task<bool> CreateOrderAsync(OrderCreate request);
-        Task<IEnumerable<OrderListWork>> GetAllOrdersAsync();
-        Task<OrderDetail> GetOrderByIdAsync(int orderId);
+        Task<IEnumerable<OrderListItem>> GetAllOrdersAsync();
+        Task<OrderDetail> GetOrderDetailAsync(int orderId);
+        Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId);
+        Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTimeOffset createdUtc);
+        Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(string artistId);
+        
+        Task<bool> UpdateOrderAsync(OrderUpdate request);
+        Task<bool> DeleteOrderAsync(int OrderId);
+        
     }

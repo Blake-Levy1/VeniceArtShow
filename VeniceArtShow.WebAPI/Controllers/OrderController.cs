@@ -12,9 +12,34 @@ using Microsoft.AspNetCore.Authorization;
 public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
-    public OrderController(IOrderService orderService)
+    private readonly ITokenService _tokenService;
+    public OrderController(IOrderService orderService, ITokenService tokenService)
     {
         _orderService = orderService;
+        _tokenService = tokenService;
+    }
+    //Post api/Order
+    [HttpPost]
+    public async Task<IActionResult> CreateOrder([FromBody] OrderCreate request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        if (await _orderService.CreateOrderAsync(request))
+            return Ok("Order created successfully.");
+
+        return BadRequest("order could not be created.");
+    }
+
+    // PUT api/Note
+    [HttpPut]
+    public async Task<IActionResult> UpdateNoteById([FromBody] OrderUpdate request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        return await _orderService.UpdateOrderAsync(request)
+            ? Ok("Note updated successfullly.")
+            : BadRequest("The Order could not be updated.");
     }
 
     //Get api/Order
@@ -25,28 +50,62 @@ public class OrderController : ControllerBase
         return Ok(orders);
     }
 
-    //Post api/Order
-    [HttpPost]
-    public async Task<IActionResult> CreateOrder([FromBody] OrderCreate request)
+    // [Authorize]
+    [HttpGet("{userId:int}")]
+    public async Task<IActionResult> GetOrderByBuyerId([FromRoute] int buyerId)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-        if (await _orderService.CreateOrderAsync(request))
-            return Ok("Order created successfully.");
-
-        return BadRequest("Note could not be created.");
+        var userDetail = await _orderService.GetAllOrdersAsync();
+        if (userDetail is null)
+        {
+            return NotFound();
+        }
+        return Ok(userDetail);
     }
+    // [Authorize]
+    [HttpGet("{userId:string}")]
+    public async Task<IActionResult> GetOrderByArtistId([FromRoute] string artistId)
+    {
+        var userDetail = await _orderService.GetOrdersByArtistIdAsync(artistId);
+        if (userDetail is null)
+        {
+            return NotFound();
+        }
+        return Ok(userDetail);
+        // }
+        // [Authorize]
+        [HttpGet("{userId:int}")]
+        public async Task<IActionResult> GetOrdersByProductIdAsync([FromRoute] int productId)
+        {
+            var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
+            if (userDetail is null)
+            {
+                return BadRequest("Order not found. (Chaos results.)");
+            }
+            return Ok(userDetail);
+        }
+        // [Authorize]
+        [HttpGet("{userId:DateTimeOffset}")]
+        public async Task<IActionResult> GetOrdersByPurchaseDate(DateTimeOffset createdUtc)
+        {
+            var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
+            if (userDetail is null)
+            {
+                return NotFound();
+            }
+            return Ok(userDetail);
+        }
 
-    // public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
-    // {
-    //     //Find the first note that has the given Id and an Owner Id that matches the requesting userId
-    //     var orderEntity = await _dbContext.Orders.FirstOrDefaultAsync(e => e.Id == orderId && e.ArtistId = userId);
-    //     //If orderEntity is null then return null, otherwise initialize and return a new OrderDtail
-    //     {
-    //         Id = orderEntity.Id,
-    //         Title = orderEntity.Title,
-    //         Price = orderEntity.Price,
-    //         CreatedUtc = orderEntity.CreatedUtc,
-    //         ModifiedUTC = orderEntity.ModifedUtc
-    //     }
+        [HttpPost("~/api/Token")]
+        public async Task<IActionResult> Token([FromBody] TokenRequest request)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var tokenResponse = await _tokenService.GetTokenAsync(request);
+            if (tokenResponse is null)
+                return BadRequest("Invalid username or password.");
+            return Ok(tokenResponse);
+        }
+
+    }
 }

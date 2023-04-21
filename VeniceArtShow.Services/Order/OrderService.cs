@@ -15,7 +15,7 @@ public class OrderService : IOrderService
     {
         _dbContext = dbContext;
         _httpContextAccessor = httpContextAccessor;
-        
+
     }
     public async Task<bool> CreateOrderAsync(OrderCreate request)
     {
@@ -32,25 +32,100 @@ public class OrderService : IOrderService
         var numberOfChanges = await _dbContext.SaveChangesAsync();
         return numberOfChanges == 1;
     }
-
-    public async Task<IEnumerable<OrderListWork>> GetAllOrdersAsync()
+    //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
+    //This becomes, in effect, a helper method, as the first steop in a GetAllOrdersByPurchaseDate???
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(string artistId)
+    // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == _userId)
-        .Select(entity => new OrderListWork
+        .Where(entity => entity.BuyerId == _userId && entity.ArtistId == artistId)
+        .Select(entity => new OrderListItem
         {
             Id = entity.Id,
-            Title = entity.Title,
+            ArtistId = entity.ArtistId
+        })
+        .ToListAsync();
+        return orders;
+    }
+
+
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId)
+    // GetAllOrdersAsync().--> may be way to go in future
+    {
+        var orders = await _dbContext.Orders
+        .Where(entity => entity.BuyerId == _userId && entity.ProductId == productId)
+        .Select(entity => new OrderListItem
+        {
+            Id = entity.Id,
+            ProductId = entity.ProductId
+        })
+        .ToListAsync();
+        return orders;
+    }
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTimeOffset createdUtc)
+
+    // GetAllOrdersAsync().--> may be way to go in future
+    {
+        var orders = await _dbContext.Orders
+        .Where(entity => entity.BuyerId == _userId && entity.CreatedUtc == createdUtc)
+        .Select(entity => new OrderListItem
+        {
+            Id = entity.Id,
             CreatedUtc = entity.CreatedUtc
         })
         .ToListAsync();
         return orders;
-
     }
 
-    Task<OrderDetail> IOrderService.GetOrderByIdAsync(int orderId)
+    public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync()
     {
-        throw new NotImplementedException();
+        var orders = await _dbContext.Orders
+        .Where(entity => entity.BuyerId == _userId)
+        .Select(entity => new OrderListItem
+        {
+            Id = entity.Id,
+            CreatedUtc = entity.CreatedUtc
+        })
+        .ToListAsync();
+        // .AsQueryable() --> may be way to go in future
+        return orders;
+    }
+
+    public async Task<bool> UpdateOrderAsync(OrderUpdate request)
+    {
+        //Find the Order and validate it's owned by the user
+        var orderEntity = await _dbContext.Orders.FindAsync(request.Id);
+
+        //By using the null conditional operator we can check if it's null at the same time we check OwnerId
+        if (orderEntity?.BuyerId != _userId)
+            return false;
+
+        //Now we update the entity's properties
+        //Yet changing the Title means buying something else entirely, so...?
+        // orderEntity.Title = request.Title;
+        orderEntity.Price = request.Price;
+        // orderEntity.modifedDateTime = DateTimeOffset.Now;
+
+        //Save the changes to the database and capture how many rows were updated
+        var numberOfChanges = await _dbContext.SaveChangesAsync();
+
+        //numberofChnges is stated to be equal to 1 becausae only one row is updated
+        return numberOfChanges == 1;
+    }
+
+    public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
+    {
+        //Find the first order that has the given Id and an Owner Id that matches the requesting userId
+        var orderEntity = await _dbContext.Orders.FirstOrDefaultAsync(e => e.Id == orderId && e.ArtistId == _userId);
+        //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
+        return orderEntity is null ? null : new OrderDetail
+        {
+            Id = orderEntity.Id,
+            Price = orderEntity.Price,
+            ProductId = orderEntity.ProductId,
+            CreatedUtc = orderEntity.CreatedUtc,
+            ModifiedUtc = orderEntity.ModifiedUtc
+        };
     }
 
     public async Task<bool> DeleteOrderAsync(int OrderId)
@@ -64,6 +139,7 @@ public class OrderService : IOrderService
         _dbContext.Orders.Remove(OrderEntity);
         return await _dbContext.SaveChangesAsync() == 1;
     }
+
     private void SetUserId()
     {
         var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
@@ -71,10 +147,12 @@ public class OrderService : IOrderService
         // var validId = int.TryParse(value, out _userId);
         if (value == null)
             throw new Exception("Attempted to create an Order without a valid User.");
-        else 
+        else
         {
             _userId = value;
         }
-            
+
     }
+
+    //Could add another helper method here to SearchById or one for SearchByPrice etc for use in other methods
 }

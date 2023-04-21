@@ -12,6 +12,8 @@ using System.ComponentModel.DataAnnotations;
         [MaxLength(100,ErrorMessage="{0} must contain no more than {1} characters.")]
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         [Required]
         public int Price { get; set; }
         [Required]
