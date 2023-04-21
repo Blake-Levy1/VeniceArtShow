@@ -105,10 +105,65 @@ public class ProductService : IProductService
         return await _dbContext.SaveChangesAsync() == 1;
     }
 
-    // public async Task<IEnumerable<ProductListItem>> SearchProductByTitle(string productTitle)
-    // {
+    public async Task<IEnumerable<ProductListItem>> SearchProductByTitle(string productTitle)
+    {
+        SetUserId();
+        var products = await _dbContext.Products
+            .Where(entity => entity.Title == productTitle)
+            .Select(entity => new ProductListItem
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                DateListed = entity.DateListed
+            })
+            .ToListAsync();
+        return products;
+    }
 
-    // }
+    public async Task<IEnumerable<ProductListItem>> SearchProductByMediaId(int mediaId)
+    {
+        SetUserId();
+        var products = await _dbContext.Products
+            .Where(entity => entity.MediaId == mediaId)
+            .Select(entity => new ProductListItem
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                DateListed = entity.DateListed
+            })
+            .ToListAsync();
+        return products;
+    }
+
+    public async Task<IEnumerable<ProductListItem>> SearchProductByPrice(double lowPrice, double highPrice)
+    {
+        SetUserId();
+        var products = await _dbContext.Products
+            .Where(entity => entity.Price <= lowPrice && entity.Price >= highPrice)
+            .Select(entity => new ProductListItem
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                DateListed = entity.DateListed
+            })
+            .ToListAsync();
+        return products;
+    }
+
+    public async Task<IEnumerable<ProductListItem>> SearchProductByArtistId(string artistId)
+    {
+        SetUserId();
+        var products = await _dbContext.Products
+            .Where(entity => entity.ArtistId == artistId)
+            .Select(entity => new ProductListItem
+            {
+                Id = entity.Id,
+                Title = entity.Title,
+                DateListed = entity.DateListed
+            })
+            .ToListAsync();
+        return products;
+    }
 
     private void SetUserId()
     {
