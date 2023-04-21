@@ -8,5 +8,10 @@ using Microsoft.AspNetCore.Mvc;
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        
+        private readonly IUserService _service;
+
+        public UserController(IUserService service)
+        {
+            _service = service;
+        }
     }
