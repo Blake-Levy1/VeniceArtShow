@@ -16,15 +16,6 @@ public class OrderController : ControllerBase
     {
         _orderService = orderService;
     }
-
-    //Get api/Order
-    [HttpGet]
-    public async Task<IActionResult> GetAllOrders()
-    {
-        var orders = await _orderService.GetAllOrdersAsync();
-        return Ok(orders);
-    }
-
     //Post api/Order
     [HttpPost]
     public async Task<IActionResult> CreateOrder([FromBody] OrderCreate request)
@@ -34,19 +25,26 @@ public class OrderController : ControllerBase
         if (await _orderService.CreateOrderAsync(request))
             return Ok("Order created successfully.");
 
-        return BadRequest("Note could not be created.");
+        return BadRequest("order could not be created.");
     }
 
-    // public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
-    // {
-    //     //Find the first note that has the given Id and an Owner Id that matches the requesting userId
-    //     var orderEntity = await _dbContext.Orders.FirstOrDefaultAsync(e => e.Id == orderId && e.ArtistId = userId);
-    //     //If orderEntity is null then return null, otherwise initialize and return a new OrderDtail
-    //     {
-    //         Id = orderEntity.Id,
-    //         Title = orderEntity.Title,
-    //         Price = orderEntity.Price,
-    //         CreatedUtc = orderEntity.CreatedUtc,
-    //         ModifiedUTC = orderEntity.ModifedUtc
-    //     }
+    // PUT api/Note
+[HttpPut]
+public async Task<IActionResult> UpdateNoteById([FromBody] OrderUpdate request)
+{
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+        return await _orderService.UpdateOrderAsync(request)
+            ? Ok("Note updated successfullly.")
+            : BadRequest("The Order could not be updated.");
+}
+
+    //Get api/Order
+    [HttpGet]
+    public async Task<IActionResult> GetAllOrders()
+    {
+        var orders = await _orderService.GetAllOrdersAsync();
+        return Ok(orders);
+    }
 }

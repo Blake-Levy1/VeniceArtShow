@@ -9,15 +9,13 @@ public class OrderEntity
 {
     [Key]
     public int Id { get; set; }
-    public readonly string Title;
-    public readonly DateTimeOffset CreatedUtc;
-    // private UserEntity fred;
+    public DateTimeOffset CreatedUtc { get; set; }
+
+    public DateTimeOffset ModifiedUtc { get; set; }
 
     [ForeignKey(nameof(UserEntity))]
     public string BuyerId { get; set; }
     public UserEntity Buyer { get; set; }
-
-    public DateTime PurchaseDate { get; set; }
 
     [ForeignKey(nameof(Media))]
     public int MediaId { get; set; }
@@ -26,7 +24,12 @@ public class OrderEntity
     [ForeignKey(nameof(ProductEntity))]
     public int ProductId { get; set; }
     // public ProductEntity Artist { get; set; }
-     public virtual ProductEntity Product { get; set; }
+   
+
+    [ForeignKey(nameof(UserEntity))]
+    public string ArtistId { get; set; }
+    // public ProductEntity Artist { get; set; }
+     public virtual UserEntity Artist { get; set; }
 
     [Required]
     public int Price { get; set; }
