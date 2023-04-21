@@ -16,6 +16,8 @@ public class UserRegister
     public string PasswordHash { get; set; }
     [Required]
     [Compare("PasswordHash", ErrorMessage = "Password does not match")]
+    public string PasswordHash{ get; set; }
+    [Compare("PasswordHash", ErrorMessage = "Password does not match. Are you an having a bad typing day?")]
     public string ConfirmPassword { get; set; }
     [Required]
     public DateTime DateCreated { get; set; }

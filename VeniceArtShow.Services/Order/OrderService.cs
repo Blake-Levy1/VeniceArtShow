@@ -8,17 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 public class OrderService : IOrderService
 {
-    private readonly int _userId;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private string _userId;
     private readonly ApplicationDbContext _dbContext;
     public OrderService(IHttpContextAccessor httpContextAccessor, ApplicationDbContext dbContext)
     {
-        var userClaims = httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-        var value = userClaims.FindFirst("Id")?.Value;
-        var validId = int.TryParse(value, out _userId);
-        if (!validId)
-            throw new Exception("Attempted to create an Order without a valid User."
-            );
         _dbContext = dbContext;
+        _httpContextAccessor = httpContextAccessor;
+        
     }
     public async Task<bool> CreateOrderAsync(OrderCreate request)
     {
@@ -39,7 +36,7 @@ public class OrderService : IOrderService
     public async Task<IEnumerable<OrderListWork>> GetAllOrdersAsync()
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.Id == _userId)
+        .Where(entity => entity.BuyerId == _userId)
         .Select(entity => new OrderListWork
         {
             Id = entity.Id,
@@ -51,13 +48,33 @@ public class OrderService : IOrderService
 
     }
 
-    public Task<OrderDetail> GetOrderByIdAsync(int orderId)
+    Task<OrderDetail> IOrderService.GetOrderByIdAsync(int orderId)
     {
         throw new NotImplementedException();
     }
 
-    // Task<OrderDetail> IOrderService.GetOrderByIdAsync(int orderId)
-    // {
-    //     throw new NotImplementedException();
-    // }
+    public async Task<bool> DeleteOrderAsync(int OrderId)
+    {
+        //Find the Order by the given Id
+        var OrderEntity = await _dbContext.Orders.FindAsync(OrderId);
+        //Validate the Order exists and is owned by the user
+        if (OrderEntity?.BuyerId != _userId)
+            return false;
+        //Remove the Order from the DbContext and asasert that the one change was saved
+        _dbContext.Orders.Remove(OrderEntity);
+        return await _dbContext.SaveChangesAsync() == 1;
+    }
+    private void SetUserId()
+    {
+        var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+        var value = userClaims.FindFirst("Id")?.Value;
+        // var validId = int.TryParse(value, out _userId);
+        if (value == null)
+            throw new Exception("Attempted to create an Order without a valid User.");
+        else 
+        {
+            _userId = value;
+        }
+            
+    }
 }

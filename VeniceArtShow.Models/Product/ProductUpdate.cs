@@ -1,29 +1,24 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class ProductEntity
+public class ProductUpdate
 {
-    [Key]
+    [Required]
     public int Id { get; set; }
     [Required]
+    [MinLength(3, ErrorMessage = "{0} must be at lest {1} characters long.")]
+    [MaxLength(100, ErrorMessage = "{0} must contain no more than {1} characters.")]
     public string Title { get; set; }
     [Required]
+    [Url]
     public string ImageUrl { get; set; }
     [Required]
+    [MaxLength(8000, ErrorMessage = "{0} must contain no more than {1} characters.")]
     public string Description { get; set; }
-    
-    [ForeignKey(nameof(Artist))]
-    public string ArtistId { get; set; }
-    public UserEntity Artist { get; set; }
     [Required]
     public double Price { get; set; }
-    [Required]
-    public DateTimeOffset DateListed { get; set; }
-    [ForeignKey(nameof(Media))]
     public int MediaId { get; set; }
-    public virtual MediaEntity Media { get; set; }
 }
