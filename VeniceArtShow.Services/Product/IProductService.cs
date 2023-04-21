@@ -13,6 +13,6 @@ public interface IProductService
     Task<bool> DeleteProductAsync(int productId);
     Task<IEnumerable<ProductListItem>> SearchProductByTitle(string productTitle);
     Task<IEnumerable<ProductListItem>> SearchProductByMediaId(int mediaId);
-    Task<IEnumerable<ProductListItem>> SearchProductByPrice(double price);
+    Task<IEnumerable<ProductListItem>> SearchProductByPrice(double lowPrice, double highPrice);
     Task<IEnumerable<ProductListItem>> SearchProductByArtistId(string artistId);
 }

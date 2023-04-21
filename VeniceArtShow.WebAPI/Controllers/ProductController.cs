@@ -69,17 +69,17 @@ public class ProductController : ControllerBase
         return Ok(products);
     }
 
-    [HttpGet("productMediaId:int")]
+    [HttpGet("{productMediaId:int}")]
     public async Task<IActionResult> SearchProductByMediaId([FromRoute] int mediaId)
     {
         var products = await _productService.SearchProductByMediaId(mediaId);
         return Ok(products);
     }
 
-    [HttpGet("{productPrice:double}")]
-    public async Task<IActionResult> SearchProductByPrice([FromRoute] double price)
+    [HttpGet("ByPrice")]
+    public async Task<IActionResult> SearchProductByPrice([FromBody] double lowPrice, double highPrice)
     {
-        var products = await _productService.SearchProductByPrice(price);
+        var products = await _productService.SearchProductByPrice(lowPrice, highPrice);
         return Ok(products);
     }
 

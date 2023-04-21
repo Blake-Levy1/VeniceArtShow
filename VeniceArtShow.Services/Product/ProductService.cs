@@ -135,11 +135,11 @@ public class ProductService : IProductService
         return products;
     }
 
-    public async Task<IEnumerable<ProductListItem>> SearchProductByPrice(double price)
+    public async Task<IEnumerable<ProductListItem>> SearchProductByPrice(double lowPrice, double highPrice)
     {
         SetUserId();
         var products = await _dbContext.Products
-            .Where(entity => entity.Price == price)
+            .Where(entity => entity.Price <= lowPrice && entity.Price >= highPrice)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
