@@ -29,8 +29,22 @@ public class MediaController : ControllerBase
             return BadRequest("Media could not be created.");
         }
 
+        [HttpPut("Update")]
+        public async Task<IActionResult> MediaUpdate([FromBody] MediaUpdate model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            return await _service.UpdateMediaAsync(model)
+            ? Ok("Media updated succesfully.")
+            : BadRequest("Media could not be updated.");
+        }
 
-
+        [HttpGet]
+        public async Task<IActionResult> GetAllMediaAsync()
+        {
+        var medias = await _service.GetAllMediaAsync();
+        return Ok(medias);
+        }
 
         //No Active Delete Method - Each product in the databse has a media attached, so we are opting to not pursue a Delete option as it will affect products already present
 
