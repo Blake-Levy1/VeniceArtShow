@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 // This is a file created from following kudvenkat, ASP NET Core Identity UserManager and SignInManager
 // https://www.youtube.com/watch?v=TfarnVqnhX0
@@ -28,12 +29,23 @@ using Microsoft.AspNetCore.Mvc;
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model()
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if(ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = model.Email, Email = model.Email};
-                userManager.CreateAsync(user, model.Password);
+                var result = await userManager.CreateAsync(user, model.Password);
+
+                if (result.Succeded)
+                {
+                    await signInManager.SignInAsync(user, isPersistent: false)
+                    return RedirectToAction("index", "home");
+                }
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError("",error.Description);
+                }
+            
             }
             return View(model);
         }
