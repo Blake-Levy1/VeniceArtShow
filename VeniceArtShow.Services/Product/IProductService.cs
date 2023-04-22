@@ -14,5 +14,5 @@ public interface IProductService
     Task<IEnumerable<ProductListItem>> SearchProductByTitle(string productTitle);
     Task<IEnumerable<ProductListItem>> SearchProductByMediaId(int mediaId);
     Task<IEnumerable<ProductListItem>> SearchProductByPrice(double lowPrice, double highPrice);
-    Task<IEnumerable<ProductListItem>> SearchProductByArtistId(string artistId);
+    Task<IEnumerable<ProductListItem>> SearchProductByArtistId(int artistId);
 }

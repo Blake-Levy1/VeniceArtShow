@@ -73,12 +73,12 @@ public class TokenService : ITokenService
     private Claim[] GetClaims(UserEntity user)
     {
         var fullName = $"{user.FirstName} {user.LastName}";
-        var name = !string.IsNullOrWhiteSpace(fullName) ? fullName : user.Username;
+        var name = !string.IsNullOrWhiteSpace(fullName) ? fullName : user.UserName;
 
         var claims = new Claim[]
         {
             new Claim("Id", user.Id.ToString()),
-            new Claim("Username", user.Username),
+            new Claim("Username", user.UserName),
             new Claim("Email", user.Email),
             new Claim("Name", name)
         };

@@ -84,7 +84,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("ByArtistId")]
-    public async Task<IActionResult> SearchProductByArtistId([FromBody] string artistId)
+    public async Task<IActionResult> SearchProductByArtistId([FromBody] int artistId)
     {
         var products = await _productService.SearchProductByArtistId(artistId);
         return Ok(products);
