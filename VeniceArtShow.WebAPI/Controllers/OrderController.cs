@@ -71,7 +71,7 @@ public class OrderController : ControllerBase
             return NotFound();
         }
         return Ok(userDetail);
-        // }
+        }
         // [Authorize]
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetOrdersByProductIdAsync([FromRoute] int productId)
@@ -108,4 +108,3 @@ public class OrderController : ControllerBase
         }
 
     }
-}

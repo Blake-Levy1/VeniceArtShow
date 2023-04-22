@@ -24,12 +24,12 @@ public class OrderEntity
     [ForeignKey(nameof(ProductEntity))]
     public int ProductId { get; set; }
     // public ProductEntity Artist { get; set; }
-   
+
 
     [ForeignKey(nameof(UserEntity))]
     public string ArtistId { get; set; }
     // public ProductEntity Artist { get; set; }
-     public virtual UserEntity Artist { get; set; }
+    public virtual UserEntity Artist { get; set; }
 
     [Required]
     public int Price { get; set; }

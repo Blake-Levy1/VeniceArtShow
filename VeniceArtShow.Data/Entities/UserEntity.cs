@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
+
 
 // CONSIDER: changing 'user' to 'owner'
 // Note in Version 1 is is assumed all users are owners. 
