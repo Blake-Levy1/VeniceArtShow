@@ -34,8 +34,9 @@ public class OrderEntity
     [Required]
     public int Price { get; set; }
     // List containing all works
-    public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();
+    // Perhaps not needed
+    // public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();
 
-    // List containing all users
-    public virtual List<UserEntity> Owners { get; set; } = new List<UserEntity>();
+    // // List containing all users
+    // public virtual List<UserEntity> Owners { get; set; } = new List<UserEntity>();
 }
