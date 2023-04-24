@@ -16,6 +16,7 @@ public class UserController : ControllerBase
         _userService = userService;
         _tokenService = tokenService;
     }
+
     [HttpPost("Register")]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegister model)
     {
