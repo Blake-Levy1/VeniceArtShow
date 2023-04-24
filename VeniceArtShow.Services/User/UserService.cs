@@ -24,7 +24,8 @@ public class UserService : IUserService
             FirstName = model.FirstName,
             LastName = model.LastName,
             Email = model.Email,
-            Biography = model.Biography
+            Biography = model.Biography,
+            DateCreated = DateTime.Now
         };
 
         var passwordHasher = new PasswordHasher<UserEntity>();
@@ -51,7 +52,7 @@ public class UserService : IUserService
             Lastname = entity.LastName,
             Email = entity.Email,
             Biography = entity.Biography,
-            DateCreated = DateTimeOffset.Now
+            DateCreated = DateTime.Now
         };
 
         return userDetail;

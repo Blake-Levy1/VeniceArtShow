@@ -84,8 +84,8 @@ public class OrderController : ControllerBase
             return Ok(userDetail);
         }
         // [Authorize]
-        [HttpGet("{userId:DateTimeOffset}")]
-        public async Task<IActionResult> GetOrdersByPurchaseDate(DateTimeOffset createdUtc)
+        [HttpGet("{userId:DateTime}")]
+        public async Task<IActionResult> GetOrdersByPurchaseDate(DateTime createdUtc)
         {
             var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
             if (userDetail is null)

@@ -20,7 +20,7 @@ public class UserEntity
     public string LastName { get; set; }
     public string Biography { get; set; }
     [Required]
-    public DateTimeOffset DateCreated { get; set; }
+    public DateTime DateCreated { get; set; }
 
     // Following 14.03 under 'UserEntity'
     // List containing all works

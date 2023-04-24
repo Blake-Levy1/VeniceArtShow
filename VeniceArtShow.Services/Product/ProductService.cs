@@ -43,7 +43,7 @@ public class ProductService : IProductService
             ImageUrl = request.ImageUrl,
             Description = request.Description,
             Price = request.Price,
-            DateListed = DateTimeOffset.Now,
+            DateListed = DateTime.Now,
             ArtistId = _userId,
             MediaId = request.MediaId
         };
@@ -69,7 +69,7 @@ public class ProductService : IProductService
             ImageUrl = productEntity.ImageUrl,
             Description = productEntity.Description,
             Price = productEntity.Price,
-            DateListed = DateTimeOffset.Now,
+            DateListed = DateTime.Now,
             MediaId = productEntity.MediaId
             // Media = productEntity.Media
         };
@@ -169,13 +169,10 @@ public class ProductService : IProductService
     {
         var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
         var value = userClaims.FindFirst("Id")?.Value;
-        // var validId = int.TryParse(value, out _userId);
+        var validId = int.TryParse(value, out _userId);
         if (value is null)
         {
             throw new Exception("Attempted to build ProductService without Id Claim.");
-        } else 
-        {
-            _userId = value;
         }
     }
 
