@@ -20,9 +20,9 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductListItem>> GetAllProductsAsync()
     {
-        SetUserId();
+        // SetUserId();
         var products = await _dbContext.Products
-            .Where(entity => entity.ArtistId == _userId)
+            // .Where(entity => entity.ArtistId == _userId)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
@@ -36,7 +36,7 @@ public class ProductService : IProductService
 
     public async Task<bool> CreateProductAsync(ProductCreate request)
     {
-        SetUserId();
+        // SetUserId();
         var productEntity = new ProductEntity
         {
             Title = request.Title,
@@ -56,7 +56,7 @@ public class ProductService : IProductService
 
     public async Task<ProductDetail> GetProductByIdAsync(int productId)
     {
-        SetUserId();
+        // SetUserId();
         var productEntity = await _dbContext.Products.Include(x => x.Media)
             .FirstOrDefaultAsync(e =>
                 e.Id == productId && e.ArtistId == _userId
@@ -77,7 +77,7 @@ public class ProductService : IProductService
 
     public async Task<bool> UpdateProductAsync (ProductUpdate request)
     {
-        SetUserId();
+        // SetUserId();
         var productEntity = await _dbContext.Products.FindAsync(request.Id);
 
         if (productEntity?.ArtistId != _userId)
@@ -95,7 +95,7 @@ public class ProductService : IProductService
 
     public async Task<bool> DeleteProductAsync(int productId)
     {
-        SetUserId();
+        // SetUserId();
         var productEntity = await _dbContext.Products.FindAsync(productId);
 
         if (productEntity?.ArtistId != _userId)
@@ -107,7 +107,7 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductListItem>> SearchProductByTitle(string productTitle)
     {
-        SetUserId();
+        // SetUserId();
         var products = await _dbContext.Products
             .Where(entity => entity.Title == productTitle)
             .Select(entity => new ProductListItem
@@ -122,7 +122,7 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductListItem>> SearchProductByMediaId(int mediaId)
     {
-        SetUserId();
+        // SetUserId();
         var products = await _dbContext.Products
             .Where(entity => entity.MediaId == mediaId)
             .Select(entity => new ProductListItem
@@ -137,7 +137,7 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductListItem>> SearchProductByPrice(double lowPrice, double highPrice)
     {
-        SetUserId();
+        // SetUserId();
         var products = await _dbContext.Products
             .Where(entity => entity.Price <= lowPrice && entity.Price >= highPrice)
             .Select(entity => new ProductListItem
@@ -152,7 +152,7 @@ public class ProductService : IProductService
 
     public async Task<IEnumerable<ProductListItem>> SearchProductByArtistId(int artistId)
     {
-        SetUserId();
+        // SetUserId();
         var products = await _dbContext.Products
             .Where(entity => entity.ArtistId == artistId)
             .Select(entity => new ProductListItem
@@ -165,20 +165,20 @@ public class ProductService : IProductService
         return products;
     }
 
-    private void SetUserId()
-    {
-        var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-        var value = userClaims.FindFirst("Id")?.Value;
-        var validId = int.TryParse(value, out _userId);
-        if (value is null)
-        {
-            throw new Exception("Attempted to build ProductService without Id Claim.");
-        }
-        // } else 
-        // {
-        //     _userId = value;
-        // }
-    }
+    // private void SetUserId()
+    // {
+    //     var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
+    //     var value = userClaims.FindFirst("Id")?.Value;
+    //     var validId = int.TryParse(value, out _userId);
+    //     if (value is null)
+    //     {
+    //         throw new Exception("Attempted to build ProductService without Id Claim.");
+    //     }
+    //     // } else 
+    //     // {
+    //     //     _userId = value;
+    //     // }
+    // }
 
 //     public static Guid ToGuid(int userId)
 //     {
