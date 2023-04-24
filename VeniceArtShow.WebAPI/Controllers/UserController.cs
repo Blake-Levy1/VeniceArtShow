@@ -16,6 +16,7 @@ public class UserController : ControllerBase
         _userService = userService;
         _tokenService = tokenService;
     }
+
     [HttpPost("Register")]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegister model)
     {
@@ -61,7 +62,7 @@ public class UserController : ControllerBase
         : BadRequest($"User {userId} could not be deleted.");
     }
 
-    [HttpPost("~/api/Token")]
+    [HttpPost("Token")]
     public async Task<IActionResult> Token([FromBody] TokenRequest request)
     {
         if (!ModelState.IsValid)

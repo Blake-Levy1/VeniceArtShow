@@ -27,7 +27,7 @@ public class OrderController : ControllerBase
         if (await _orderService.CreateOrderAsync(request))
             return Ok("Order created successfully.");
 
-        return BadRequest("order could not be created.");
+        return BadRequest("Order could not be created.");
     }
 
     // PUT api/Order
@@ -94,17 +94,4 @@ public class OrderController : ControllerBase
             }
             return Ok(userDetail);
         }
-
-        [HttpPost("~/api/Token")]
-        public async Task<IActionResult> Token([FromBody] TokenRequest request)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var tokenResponse = await _tokenService.GetTokenAsync(request);
-            if (tokenResponse is null)
-                return BadRequest("Invalid username or password.");
-            return Ok(tokenResponse);
-        }
-
     }
