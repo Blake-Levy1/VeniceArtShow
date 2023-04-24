@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class ProductService : IProductService
 {
-    private string _userId;
+    private int _userId;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationDbContext _dbContext;
     public ProductService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
@@ -150,7 +150,7 @@ public class ProductService : IProductService
         return products;
     }
 
-    public async Task<IEnumerable<ProductListItem>> SearchProductByArtistId(string artistId)
+    public async Task<IEnumerable<ProductListItem>> SearchProductByArtistId(int artistId)
     {
         SetUserId();
         var products = await _dbContext.Products

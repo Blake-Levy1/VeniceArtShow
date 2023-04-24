@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -33,7 +32,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("Update")]
-    public async Task<IActionResult> UpdateUser([FromBody] UserRegister model)
+    public async Task<IActionResult> UpdateUser([FromBody] UserUpdate model)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -59,7 +58,7 @@ public class UserController : ControllerBase
     {
         return await _userService.DeleteUserAsync(userId)
         ? Ok($"User {userId} was deleted successfully.")
-        : BadRequest($"User {userId} could not be deleted.")
+        : BadRequest($"User {userId} could not be deleted.");
     }
 
     [HttpPost("~/api/Token")]
