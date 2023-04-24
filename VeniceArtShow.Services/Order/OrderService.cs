@@ -19,10 +19,11 @@ public class OrderService : IOrderService
     }
     public async Task<bool> CreateOrderAsync(OrderCreate request)
     {
+        double priceAsDouble = Convert.ToDouble(request.Price);
         var orderEntity = new OrderEntity
         {
             //Title = request.Title,
-            Price = request.Price,
+            Price = priceAsDouble,
             BuyerId = _userId,
             CreatedUtc = DateTime.Now,
 

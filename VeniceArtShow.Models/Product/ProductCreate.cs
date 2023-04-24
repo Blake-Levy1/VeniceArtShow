@@ -18,5 +18,8 @@ public class ProductCreate
     public string Description { get; set; }
     [Required]
     public double Price { get; set; }
+    [Required]
+    public int ArtistId { get; set; }
+    [Required]
     public int MediaId { get; set; }
 }
