@@ -42,10 +42,10 @@ public class UserController : ControllerBase
             : BadRequest("User could not be updated");
     }
     
-    [HttpGet("{userId:int}")]
-    public async Task<IActionResult> GetUserById([FromRoute] int userId)
+    [HttpGet("{Id:int}")]
+    public async Task<IActionResult> GetUserById([FromRoute] int id)
     {
-        var userDetail = await _userService.GetUserByIdAsync(userId);
+        var userDetail = await _userService.GetUserByIdAsync(id);
         if (userDetail is null)
         {
             return NotFound();
@@ -53,12 +53,12 @@ public class UserController : ControllerBase
         return Ok(userDetail);
     }
 
-    [HttpDelete("Delete")]
-    public async Task<IActionResult> DeleteUser([FromBody] int userId)
+    [HttpDelete("{Id:int}")]
+    public async Task<IActionResult> DeleteUser([FromRoute] int id)
     {
-        return await _userService.DeleteUserAsync(userId)
-        ? Ok($"User {userId} was deleted successfully.")
-        : BadRequest($"User {userId} could not be deleted.");
+        return await _userService.DeleteUserAsync(id)
+        ? Ok($"User {id} was deleted successfully.")
+        : BadRequest($"User {id} could not be deleted.");
     }
 
     [HttpPost("Token")]
