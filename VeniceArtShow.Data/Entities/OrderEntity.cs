@@ -14,7 +14,7 @@ public class OrderEntity
     public DateTime ModifiedUtc { get; set; }
 
     [ForeignKey(nameof(UserEntity))]
-    public string BuyerId { get; set; }
+    public int BuyerId { get; set; }
     public UserEntity Buyer { get; set; }
 
     [ForeignKey(nameof(Media))]
@@ -27,7 +27,7 @@ public class OrderEntity
 
 
     [ForeignKey(nameof(UserEntity))]
-    public string ArtistId { get; set; }
+    public int ArtistId { get; set; }
     // public ProductEntity Artist { get; set; }
     public virtual UserEntity Artist { get; set; }
 

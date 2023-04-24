@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 public class OrderService : IOrderService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private string _userId;
+    private int _userId;
     private readonly ApplicationDbContext _dbContext;
     public OrderService(IHttpContextAccessor httpContextAccessor, ApplicationDbContext dbContext)
     {
@@ -34,7 +34,7 @@ public class OrderService : IOrderService
     }
     //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
     //This becomes, in effect, a helper method, as the first steop in a GetAllOrdersByPurchaseDate???
-    public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(string artistId)
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(int artistId)
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
@@ -147,10 +147,6 @@ public class OrderService : IOrderService
         // var validId = int.TryParse(value, out _userId);
         if (value == null)
             throw new Exception("Attempted to create an Order without a valid User.");
-        else
-        {
-            _userId = value;
-        }
 
     }
 

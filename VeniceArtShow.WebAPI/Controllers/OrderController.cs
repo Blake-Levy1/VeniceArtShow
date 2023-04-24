@@ -62,8 +62,8 @@ public class OrderController : ControllerBase
         return Ok(userDetail);
     }
     // [Authorize]
-    [HttpGet("{userId:string}")]
-    public async Task<IActionResult> GetOrderByArtistId([FromRoute] string artistId)
+    [HttpGet("{userId:int}")]
+    public async Task<IActionResult> GetOrderByArtistId([FromRoute] int artistId)
     {
         var userDetail = await _orderService.GetOrdersByArtistIdAsync(artistId);
         if (userDetail is null)
