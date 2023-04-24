@@ -174,6 +174,10 @@ public class ProductService : IProductService
         {
             throw new Exception("Attempted to build ProductService without Id Claim.");
         }
+        // } else 
+        // {
+        //     _userId = value;
+        // }
     }
 
 //     public static Guid ToGuid(int userId)
