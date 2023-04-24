@@ -30,15 +30,15 @@ public class OrderController : ControllerBase
         return BadRequest("order could not be created.");
     }
 
-    // PUT api/Note
+    // PUT api/Order
     [HttpPut]
-    public async Task<IActionResult> UpdateNoteById([FromBody] OrderUpdate request)
+    public async Task<IActionResult> UpdateOrderById([FromBody] OrderUpdate request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         return await _orderService.UpdateOrderAsync(request)
-            ? Ok("Note updated successfullly.")
+            ? Ok("Order updated successfullly.")
             : BadRequest("The Order could not be updated.");
     }
 
