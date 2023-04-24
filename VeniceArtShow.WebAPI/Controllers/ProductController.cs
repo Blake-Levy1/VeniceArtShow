@@ -77,9 +77,9 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("ByPrice")]
-    public async Task<IActionResult> SearchProductByPrice([FromBody] double lowPrice, double highPrice)
+    public async Task<IActionResult> SearchProductByPrice([FromBody] SearchProductByPrice search)
     {
-        var products = await _productService.SearchProductByPrice(lowPrice, highPrice);
+        var products = await _productService.SearchProductByPrice(search);
         return Ok(products);
     }
 

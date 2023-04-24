@@ -44,7 +44,7 @@ public class ProductService : IProductService
             Description = request.Description,
             Price = request.Price,
             DateListed = DateTime.Now,
-            ArtistId = _userId,
+            ArtistId = request.ArtistId,
             MediaId = request.MediaId
         };
 
@@ -59,8 +59,7 @@ public class ProductService : IProductService
         // SetUserId();
         var productEntity = await _dbContext.Products.Include(x => x.Media)
             .FirstOrDefaultAsync(e =>
-                e.Id == productId && e.ArtistId == _userId
-            );
+                e.Id == productId);
 
         return productEntity is null ? null : new ProductDetail
         {
@@ -80,7 +79,7 @@ public class ProductService : IProductService
         // SetUserId();
         var productEntity = await _dbContext.Products.FindAsync(request.Id);
 
-        if (productEntity?.ArtistId != _userId)
+        if (productEntity?.ArtistId != request.ArtistId)
             return false;
 
         productEntity.Title = request.Title;
@@ -98,8 +97,8 @@ public class ProductService : IProductService
         // SetUserId();
         var productEntity = await _dbContext.Products.FindAsync(productId);
 
-        if (productEntity?.ArtistId != _userId)
-            return false;
+        // if (productEntity?.ArtistId != _userId)
+            // return false;
 
         _dbContext.Products.Remove(productEntity);
         return await _dbContext.SaveChangesAsync() == 1;
@@ -135,11 +134,13 @@ public class ProductService : IProductService
         return products;
     }
 
-    public async Task<IEnumerable<ProductListItem>> SearchProductByPrice(double lowPrice, double highPrice)
+    public async Task<IEnumerable<ProductListItem>> SearchProductByPrice(SearchProductByPrice search)
     {
         // SetUserId();
+        double lowPrice = Convert.ToDouble(search.LowPrice);
+        double highPrice = Convert.ToDouble(search.HighPrice);
         var products = await _dbContext.Products
-            .Where(entity => entity.Price <= lowPrice && entity.Price >= highPrice)
+            .Where(entity => entity.Price >= lowPrice && entity.Price <= highPrice)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
