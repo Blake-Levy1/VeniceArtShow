@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authorization;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class OrderController : ControllerBase
@@ -19,7 +19,7 @@ public class OrderController : ControllerBase
         _tokenService = tokenService;
     }
     //Post api/Order
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<IActionResult> CreateOrder([FromBody] OrderCreate request)
     {
         if (!ModelState.IsValid)
@@ -31,7 +31,7 @@ public class OrderController : ControllerBase
     }
 
     // PUT api/Order
-    [HttpPut]
+    [HttpPut("{orderId:int}")]
     public async Task<IActionResult> UpdateOrderById([FromBody] OrderUpdate request)
     {
         if (!ModelState.IsValid)
@@ -51,7 +51,7 @@ public class OrderController : ControllerBase
     }
 
     // [Authorize]
-    [HttpGet("{userId:int}")]
+    [HttpGet("{buyerId:int}")]
     public async Task<IActionResult> GetOrderByBuyerId([FromRoute] int buyerId)
     {
         var userDetail = await _orderService.GetAllOrdersAsync();
@@ -62,10 +62,10 @@ public class OrderController : ControllerBase
         return Ok(userDetail);
     }
     // [Authorize]
-    [HttpGet("{userId:int}")]
-    public async Task<IActionResult> GetOrderByArtistId([FromRoute] int artistId)
+    [HttpGet("ArtistId")]
+    public async Task<IActionResult> GetOrderByArtistId([FromBody] GetOrdersByArtistId request)
     {
-        var userDetail = await _orderService.GetOrdersByArtistIdAsync(artistId);
+        var userDetail = await _orderService.GetOrdersByArtistIdAsync(request);
         if (userDetail is null)
         {
             return NotFound();
@@ -73,7 +73,7 @@ public class OrderController : ControllerBase
         return Ok(userDetail);
         }
         // [Authorize]
-        [HttpGet("{userId:int}")]
+        [HttpGet("{productId:int}")]
         public async Task<IActionResult> GetOrdersByProductIdAsync([FromRoute] int productId)
         {
             var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
@@ -84,7 +84,7 @@ public class OrderController : ControllerBase
             return Ok(userDetail);
         }
         // [Authorize]
-        [HttpGet("{userId:DateTime}")]
+        [HttpGet("{createdUtc}")]
         public async Task<IActionResult> GetOrdersByPurchaseDate(DateTime createdUtc)
         {
             var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
