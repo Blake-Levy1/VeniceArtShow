@@ -169,14 +169,15 @@ public class ProductService : IProductService
     {
         var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
         var value = userClaims.FindFirst("Id")?.Value;
-        // var validId = int.TryParse(value, out _userId);
+        var validId = int.TryParse(value, out _userId);
         if (value is null)
         {
             throw new Exception("Attempted to build ProductService without Id Claim.");
-        } else 
-        {
-            _userId = value;
         }
+        // } else 
+        // {
+        //     _userId = value;
+        // }
     }
 
 //     public static Guid ToGuid(int userId)
