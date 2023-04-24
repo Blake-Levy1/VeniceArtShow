@@ -61,7 +61,7 @@ public class UserController : ControllerBase
         : BadRequest($"User {userId} could not be deleted.");
     }
 
-    [HttpPost("~/api/Token")]
+    [HttpPost("Token")]
     public async Task<IActionResult> Token([FromBody] TokenRequest request)
     {
         if (!ModelState.IsValid)

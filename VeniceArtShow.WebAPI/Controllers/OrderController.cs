@@ -30,15 +30,15 @@ public class OrderController : ControllerBase
         return BadRequest("order could not be created.");
     }
 
-    // PUT api/Note
+    // PUT api/Order
     [HttpPut]
-    public async Task<IActionResult> UpdateNoteById([FromBody] OrderUpdate request)
+    public async Task<IActionResult> UpdateOrderById([FromBody] OrderUpdate request)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         return await _orderService.UpdateOrderAsync(request)
-            ? Ok("Note updated successfullly.")
+            ? Ok("Order updated successfullly.")
             : BadRequest("The Order could not be updated.");
     }
 
@@ -62,8 +62,8 @@ public class OrderController : ControllerBase
         return Ok(userDetail);
     }
     // [Authorize]
-    [HttpGet("{userId:string}")]
-    public async Task<IActionResult> GetOrderByArtistId([FromRoute] string artistId)
+    [HttpGet("{userId:int}")]
+    public async Task<IActionResult> GetOrderByArtistId([FromRoute] int artistId)
     {
         var userDetail = await _orderService.GetOrdersByArtistIdAsync(artistId);
         if (userDetail is null)

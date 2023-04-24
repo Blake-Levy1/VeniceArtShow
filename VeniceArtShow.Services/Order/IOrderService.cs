@@ -11,7 +11,7 @@ using System.Security.Claims;
         Task<OrderDetail> GetOrderDetailAsync(int orderId);
         Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId);
         Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc);
-        Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(string artistId);
+        Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(int artistId);
         
         Task<bool> UpdateOrderAsync(OrderUpdate request);
         Task<bool> DeleteOrderAsync(int OrderId);

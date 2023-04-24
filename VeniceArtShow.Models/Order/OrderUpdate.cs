@@ -8,7 +8,7 @@ public class OrderUpdate
 {
     [Required]
     public int Id { get; set; }
-    public string? BuyerId { get; set; }
+    public int? BuyerId { get; set; }
 
     [Required]
     [MinLength(2, ErrorMessage = "{0} must be at least {1} characters long.")]

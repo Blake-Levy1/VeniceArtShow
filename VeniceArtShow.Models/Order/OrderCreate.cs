@@ -17,6 +17,6 @@ using System.ComponentModel.DataAnnotations;
         [Required]
         public int Price { get; set; }
         [Required]
-        public string BuyerId { get; set; }
+        public int BuyerId { get; set; }
         public DateTimeOffset CreatedUtc { get; set; }
     }
