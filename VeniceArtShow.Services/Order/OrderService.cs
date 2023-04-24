@@ -24,7 +24,7 @@ public class OrderService : IOrderService
             //Title = request.Title,
             Price = request.Price,
             BuyerId = _userId,
-            //CreatedUtc = DateTime.Now,
+            CreatedUtc = DateTime.Now,
 
         };
         _dbContext.Orders.Add(orderEntity);
@@ -34,11 +34,11 @@ public class OrderService : IOrderService
     }
     //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
     //This becomes, in effect, a helper method, as the first steop in a GetAllOrdersByPurchaseDate???
-    public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(int artistId)
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(GetOrdersByArtistId request)
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == _userId && entity.ArtistId == artistId)
+        .Where(entity => entity.BuyerId == request.BuyerId && entity.ArtistId == request.ArtistId)
         .Select(entity => new OrderListItem
         {
             Id = entity.Id,
@@ -97,14 +97,14 @@ public class OrderService : IOrderService
         var orderEntity = await _dbContext.Orders.FindAsync(request.Id);
 
         //By using the null conditional operator we can check if it's null at the same time we check OwnerId
-        if (orderEntity?.BuyerId != _userId)
+        if (orderEntity?.BuyerId != request.BuyerId)
             return false;
 
         //Now we update the entity's properties
         //Yet changing the Title means buying something else entirely, so...?
         // orderEntity.Title = request.Title;
         orderEntity.Price = request.Price;
-        // orderEntity.modifedDateTime = DateTime.Now;
+        orderEntity.ModifiedUtc = DateTime.Now;
 
         //Save the changes to the database and capture how many rows were updated
         var numberOfChanges = await _dbContext.SaveChangesAsync();
@@ -138,16 +138,6 @@ public class OrderService : IOrderService
         //Remove the Order from the DbContext and asasert that the one change was saved
         _dbContext.Orders.Remove(OrderEntity);
         return await _dbContext.SaveChangesAsync() == 1;
-    }
-
-    private void SetUserId()
-    {
-        var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
-        var value = userClaims.FindFirst("Id")?.Value;
-        // var validId = int.TryParse(value, out _userId);
-        if (value == null)
-            throw new Exception("Attempted to create an Order without a valid User.");
-
     }
 
     //Could add another helper method here to SearchById or one for SearchByPrice etc for use in other methods

@@ -14,7 +14,7 @@ public class UserService : IUserService
     }
     public async Task<bool> RegisterUserAsync(UserRegister model)
     {
-        if (await GetUserByEmailAsync(model.Email) != null || await GetUserByUsernameAsync(model.Username) != null) ;
+        if (await GetUserByEmailAsync(model.Email) != null || await GetUserByUsernameAsync(model.Username) != null)
         {
             return false;
         }
