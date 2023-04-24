@@ -9,9 +9,9 @@ public class OrderEntity
 {
     [Key]
     public int Id { get; set; }
-    public DateTimeOffset CreatedUtc { get; set; }
+    public DateTime CreatedUtc { get; set; }
 
-    public DateTimeOffset ModifiedUtc { get; set; }
+    public DateTime ModifiedUtc { get; set; }
 
     [ForeignKey(nameof(UserEntity))]
     public string BuyerId { get; set; }

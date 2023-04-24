@@ -21,7 +21,7 @@ public class ProductEntity
     [Required]
     public double Price { get; set; }
     [Required]
-    public DateTimeOffset DateListed { get; set; }
+    public DateTime DateListed { get; set; }
     [ForeignKey(nameof(Media))]
     public int MediaId { get; set; }
     public virtual MediaEntity Media { get; set; }

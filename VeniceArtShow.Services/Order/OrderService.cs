@@ -24,7 +24,7 @@ public class OrderService : IOrderService
             //Title = request.Title,
             Price = request.Price,
             BuyerId = _userId,
-            //CreatedUtc = DateTimeOffset.Now,
+            //CreatedUtc = DateTime.Now,
 
         };
         _dbContext.Orders.Add(orderEntity);
@@ -62,7 +62,7 @@ public class OrderService : IOrderService
         .ToListAsync();
         return orders;
     }
-    public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTimeOffset createdUtc)
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc)
 
     // GetAllOrdersAsync().--> may be way to go in future
     {
@@ -104,7 +104,7 @@ public class OrderService : IOrderService
         //Yet changing the Title means buying something else entirely, so...?
         // orderEntity.Title = request.Title;
         orderEntity.Price = request.Price;
-        // orderEntity.modifedDateTime = DateTimeOffset.Now;
+        // orderEntity.modifedDateTime = DateTime.Now;
 
         //Save the changes to the database and capture how many rows were updated
         var numberOfChanges = await _dbContext.SaveChangesAsync();
