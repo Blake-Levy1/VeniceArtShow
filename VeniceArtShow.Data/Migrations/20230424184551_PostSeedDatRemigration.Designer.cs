@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace VeniceArtShow.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230424184551_PostSeedDatRemigration")]
+    partial class PostSeedDatRemigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,8 +70,14 @@ namespace VeniceArtShow.Data.Migrations
                     b.Property<DateTime>("CreatedUtc")
                         .HasColumnType("datetime2");
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ModifiedUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -78,6 +87,8 @@ namespace VeniceArtShow.Data.Migrations
                     b.HasIndex("ArtistId");
 
                     b.HasIndex("BuyerId");
+
+                    b.HasIndex("MediaId");
 
                     b.ToTable("Orders");
                 });
@@ -127,7 +138,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             ArtistId = 1,
-                            DateListed = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1570),
+                            DateListed = new DateTime(2023, 4, 24, 14, 45, 50, 989, DateTimeKind.Local).AddTicks(5928),
                             Description = "Painting of Mona Lisa in style of Edward Hopper",
                             ImageUrl = "https://effinghamdailynews.com/today",
                             MediaId = 1,
@@ -138,7 +149,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             ArtistId = 2,
-                            DateListed = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1570),
+                            DateListed = new DateTime(2023, 4, 24, 14, 45, 50, 989, DateTimeKind.Local).AddTicks(5931),
                             Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
                             ImageUrl = "https://hollyjanedie.com",
                             MediaId = 2,
@@ -191,7 +202,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
-                            DateCreated = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1440),
+                            DateCreated = new DateTime(2023, 4, 24, 14, 45, 50, 989, DateTimeKind.Local).AddTicks(5722),
                             Email = "unbricker@efa.org",
                             FirstName = "Horace",
                             LastName = "Greenbottom",
@@ -202,7 +213,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
-                            DateCreated = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1480),
+                            DateCreated = new DateTime(2023, 4, 24, 14, 45, 50, 989, DateTimeKind.Local).AddTicks(5773),
                             Email = "thingPainter@efa.org",
                             FirstName = "Holly",
                             LastName = "Janedie",
@@ -213,27 +224,29 @@ namespace VeniceArtShow.Data.Migrations
 
             modelBuilder.Entity("OrderEntity", b =>
                 {
-                    b.HasOne("ProductEntity", "Artist")
+                    b.HasOne("UserEntity", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("UserEntity", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MediaEntity", "Media")
                         .WithMany()
                         .HasForeignKey("MediaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Artist");
 
                     b.Navigation("Buyer");
+
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("ProductEntity", b =>
@@ -241,13 +254,13 @@ namespace VeniceArtShow.Data.Migrations
                     b.HasOne("UserEntity", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("MediaEntity", "Media")
                         .WithMany()
                         .HasForeignKey("MediaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Artist");

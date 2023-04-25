@@ -9,5 +9,5 @@ public interface IUserService
   Task<bool> RegisterUserAsync(UserRegister model);
   Task<UserDetail> GetUserByIdAsync(int userId);
   Task<bool> UpdateUserAsync(UserUpdate request);
-  Task<bool> DeleteUserAsync(int Id);
+  Task<bool> DeleteUserAsync(int id);
 }
