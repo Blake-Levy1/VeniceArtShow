@@ -7,9 +7,9 @@ using System.ComponentModel.DataAnnotations;
     public class OrderDetail
     {
         public int Id { get; set; }
-        public int Price { get; set; }
+        public double Price { get; set; }
         public int ProductId { get; set; }
-        public int MediaId { get; set; }
+        // public int MediaId { get; set; }
         public DateTimeOffset CreatedUtc { get; set; }
         public DateTimeOffset? ModifiedUtc { get; set; }
     }

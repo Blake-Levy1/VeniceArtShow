@@ -26,6 +26,8 @@ public class OrderService : IOrderService
             Price = request.Price,
             BuyerId = request.BuyerId,
             ArtistId = request.ArtistId,
+            // MediaId = request.MediaId,
+            ProductId = request.ProductId,
             CreatedUtc = DateTime.Now,
 
         };
@@ -37,7 +39,7 @@ public class OrderService : IOrderService
 
      //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
     //This becomes, in effect, a helper method, as the first steop in a GetAllOrdersByPurchaseDate???
-    public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(GetOrdersByArtistId request)
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(GetOrdersByBuyerOrArtistId request)
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
@@ -67,33 +69,35 @@ public class OrderService : IOrderService
         return orders;
     }
 
-      public async Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int orderId)
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId)
     
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        // .Where(entity => entity.BuyerId == _userId && entity.OrderId == orderId)
-        .Select(entity => new OrderListItem
-        {
-
-            Id = entity.Id,
-            ProductId = entity.ProductId
-        })
-        .ToListAsync();
-        return orders;
-    }
-    public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc)
-    {
-        var orders = await _dbContext.Orders
-        // .Where(entity => entity.BuyerId == _userId && entity.CreatedUtc == createdUtc)
+        .Where(entity => entity.ProductId == productId)
         .Select(entity => new OrderListItem
         {
             Id = entity.Id,
+            ArtistId = entity.ArtistId,
+            ProductId = entity.ProductId,
             CreatedUtc = entity.CreatedUtc
         })
         .ToListAsync();
         return orders;
     }
+    // public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc)
+    // {
+    //     var orders = await _dbContext.Orders
+    //     // .Where(entity => entity.BuyerId == _userId && entity.CreatedUtc == createdUtc)
+    //     .Select(entity => new OrderListItem
+    //     {
+    //         Id = entity.Id,
+    //         ArtistId = entity.ArtistId,
+    //         CreatedUtc = entity.CreatedUtc
+    //     })
+    //     .ToListAsync();
+    //     return orders;
+    // }
 
     public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync()
     {
@@ -109,33 +113,33 @@ public class OrderService : IOrderService
         return orders;
     }
 
-    public async Task<bool> UpdateOrderAsync(OrderUpdate request)
-    {
-        //Find the Order and validate it's owned by the user
-        var orderEntity = await _dbContext.Orders.FindAsync(request.Id);
+    // public async Task<bool> UpdateOrderAsync(OrderUpdate request)
+    // {
+    //     //Find the Order and validate it's owned by the user
+    //     var orderEntity = await _dbContext.Orders.FindAsync(request.Id);
 
-        //By using the null conditional operator we can check if it's null at the same time we check OwnerId
-        if (orderEntity?.BuyerId != request.BuyerId)
-            return false;
+    //     //By using the null conditional operator we can check if it's null at the same time we check OwnerId
+    //     if (orderEntity?.BuyerId != request.BuyerId)
+    //         return false;
 
-        //Now we update the entity's properties
-        //Yet changing the Title means buying something else entirely, so...?
-        orderEntity.ProductTitle = request.ProductTitle;
-        // orderEntity.Artist = request.Artist;
-        // orderEntity.Price = request.Price;
-        orderEntity.ModifiedUtc = DateTime.Now;
+    //     //Now we update the entity's properties
+    //     //Yet changing the Title means buying something else entirely, so...?
+    //     // orderEntity.Title = request.Title;
+    //     // orderEntity.Artist = request.Artist;
+    //     // orderEntity.Price = request.Price;
+    //     orderEntity.ModifiedUtc = DateTime.Now;
 
-        //Save the changes to the database and capture how many rows were updated
-        var numberOfChanges = await _dbContext.SaveChangesAsync();
+    //     //Save the changes to the database and capture how many rows were updated
+    //     var numberOfChanges = await _dbContext.SaveChangesAsync();
 
-        //numberofChnges is stated to be equal to 1 becausae only one row is updated
-        return numberOfChanges == 1;
-    }
+    //     //numberofChnges is stated to be equal to 1 becausae only one row is updated
+    //     return numberOfChanges == 1;
+    // }
 
     public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
     {
             //Find the first order that has the given Id and an Owner Id that matches the requesting userId
-        var orderEntity = await _dbContext.Orders.Include(x => x.Media)
+        var orderEntity = await _dbContext.Orders
         .FirstOrDefaultAsync(e =>
             e.Id == orderId);
         return orderEntity is null ? null : new OrderDetail
@@ -151,9 +155,9 @@ public class OrderService : IOrderService
             Id = orderEntity.Id,
             Price = orderEntity.Price,
             ProductId = orderEntity.ProductId,
-            MediaId = orderEntity.MediaId,
+            // MediaId = orderEntity.MediaId,
             CreatedUtc = orderEntity.CreatedUtc,
-            ModifiedUtc = orderEntity.ModifiedUtc
+            // ModifiedUtc = orderEntity.ModifiedUtc
         };
     }
 
