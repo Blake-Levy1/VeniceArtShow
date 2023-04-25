@@ -48,6 +48,7 @@ public class UserService : IUserService
         var userDetail = new UserDetail
         {
             Id = entity.Id,
+            Username = entity.UserName,
             Firstname = entity.FirstName,
             Lastname = entity.LastName,
             Email = entity.Email,
@@ -69,8 +70,10 @@ public class UserService : IUserService
         userEntity.FirstName = request.Firstname;
         userEntity.LastName = request.Lastname;
         userEntity.Email = request.Email;
-        userEntity.Password = request.Password;
         userEntity.Biography = request.Biography;
+
+        var passwordHasher = new PasswordHasher<UserEntity>();
+        userEntity.Password = passwordHasher.HashPassword(userEntity, request.Password);
 
         var numberOfChanges = await _dbContext.SaveChangesAsync();
 
