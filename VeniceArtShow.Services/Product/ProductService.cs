@@ -97,9 +97,6 @@ public class ProductService : IProductService
         // SetUserId();
         var productEntity = await _dbContext.Products.FindAsync(productId);
 
-        // if (productEntity?.ArtistId != _userId)
-            // return false;
-
         _dbContext.Products.Remove(productEntity);
         return await _dbContext.SaveChangesAsync() == 1;
     }
