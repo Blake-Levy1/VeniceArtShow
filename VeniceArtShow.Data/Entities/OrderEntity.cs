@@ -25,14 +25,18 @@ public class OrderEntity
     public int ProductId { get; set; }
     // public ProductEntity Artist { get; set; }
 
+     [ForeignKey(nameof(ProductTitle))]
+    public string ProductTitle { get; set; }
+    // public ProductEntity Artist { get; set; }
+
 
     [ForeignKey(nameof(Artist))]
     public int ArtistId { get; set; }
-    // public ProductEntity Artist { get; set; }
-    public virtual UserEntity Artist { get; set; }
+    public ProductEntity Artist { get; set; }
+    // public virtual UserEntity Artist { get; set; }
 
     [Required]
-    public string Price { get; set; }
+    public int Price { get; set; }
     // List containing all works
     // Perhaps not needed
     // public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();

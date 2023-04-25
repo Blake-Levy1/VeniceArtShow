@@ -9,6 +9,7 @@ using System.Security.Claims;
         Task<bool> CreateOrderAsync(OrderCreate request);
         Task<IEnumerable<OrderListItem>> GetAllOrdersAsync();
         Task<OrderDetail> GetOrderDetailAsync(int orderId);
+        
         Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId);
         Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc);
         Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(GetOrdersByArtistId request);

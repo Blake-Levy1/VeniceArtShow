@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 public class OrderService : IOrderService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private int _userId;
+    // private int _userId;
     private readonly ApplicationDbContext _dbContext;
     public OrderService(IHttpContextAccessor httpContextAccessor, ApplicationDbContext dbContext)
     {
@@ -22,9 +22,10 @@ public class OrderService : IOrderService
         double priceAsDouble = Convert.ToDouble(request.Price);
         var orderEntity = new OrderEntity
         {
-            //Title = request.Title,
-            Price = priceAsDouble,
-            BuyerId = _userId,
+            // Title = request.Title,
+            Price = request.Price,
+            BuyerId = request.BuyerId,
+            ArtistId = request.ArtistId,
             CreatedUtc = DateTime.Now,
 
         };
@@ -33,7 +34,8 @@ public class OrderService : IOrderService
         var numberOfChanges = await _dbContext.SaveChangesAsync();
         return numberOfChanges == 1;
     }
-    //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
+
+     //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
     //This becomes, in effect, a helper method, as the first steop in a GetAllOrdersByPurchaseDate???
     public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(GetOrdersByArtistId request)
     // GetAllOrdersAsync().--> may be way to go in future
@@ -50,13 +52,30 @@ public class OrderService : IOrderService
     }
 
 
-    public async Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId)
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByOrderIdAsync(int orderId)
+    
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == _userId && entity.ProductId == productId)
+        // .Where(entity => entity.BuyerId == _userId && entity.OrderId == orderId)
         .Select(entity => new OrderListItem
         {
+
+            Id = entity.Id
+        })
+        .ToListAsync();
+        return orders;
+    }
+
+      public async Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int orderId)
+    
+    // GetAllOrdersAsync().--> may be way to go in future
+    {
+        var orders = await _dbContext.Orders
+        // .Where(entity => entity.BuyerId == _userId && entity.OrderId == orderId)
+        .Select(entity => new OrderListItem
+        {
+
             Id = entity.Id,
             ProductId = entity.ProductId
         })
@@ -64,11 +83,9 @@ public class OrderService : IOrderService
         return orders;
     }
     public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc)
-
-    // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == _userId && entity.CreatedUtc == createdUtc)
+        // .Where(entity => entity.BuyerId == _userId && entity.CreatedUtc == createdUtc)
         .Select(entity => new OrderListItem
         {
             Id = entity.Id,
@@ -81,7 +98,7 @@ public class OrderService : IOrderService
     public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync()
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == _userId)
+        // .Where(entity => entity.BuyerId == _userId)
         .Select(entity => new OrderListItem
         {
             Id = entity.Id,
@@ -103,8 +120,9 @@ public class OrderService : IOrderService
 
         //Now we update the entity's properties
         //Yet changing the Title means buying something else entirely, so...?
-        // orderEntity.Title = request.Title;
-        orderEntity.Price = request.Price;
+        orderEntity.ProductTitle = request.ProductTitle;
+        // orderEntity.Artist = request.Artist;
+        // orderEntity.Price = request.Price;
         orderEntity.ModifiedUtc = DateTime.Now;
 
         //Save the changes to the database and capture how many rows were updated
@@ -116,28 +134,38 @@ public class OrderService : IOrderService
 
     public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
     {
-        //Find the first order that has the given Id and an Owner Id that matches the requesting userId
-        var orderEntity = await _dbContext.Orders.FirstOrDefaultAsync(e => e.Id == orderId && e.ArtistId == _userId);
-        //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
+            //Find the first order that has the given Id and an Owner Id that matches the requesting userId
+        var orderEntity = await _dbContext.Orders.Include(x => x.Media)
+        .FirstOrDefaultAsync(e =>
+            e.Id == orderId);
         return orderEntity is null ? null : new OrderDetail
+        
+        
+        // var OrderEntity = await _dbContext.Orders.FirstOrDefaultAsync(predicate: e=>
+        //     e.Id == orderId && e.BuyerId == buyerId);
+
+        // (e => e.Id == orderId && e.ArtistId == artistId);
+        //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
+
         {
             Id = orderEntity.Id,
             Price = orderEntity.Price,
             ProductId = orderEntity.ProductId,
+            MediaId = orderEntity.MediaId,
             CreatedUtc = orderEntity.CreatedUtc,
             ModifiedUtc = orderEntity.ModifiedUtc
         };
     }
 
-    public async Task<bool> DeleteOrderAsync(int OrderId)
+    public async Task<bool> DeleteOrderAsync(int orderId)
     {
         //Find the Order by the given Id
-        var OrderEntity = await _dbContext.Orders.FindAsync(OrderId);
+        var orderEntity = await _dbContext.Orders.FindAsync(orderId);
         //Validate the Order exists and is owned by the user
-        if (OrderEntity?.BuyerId != _userId)
-            return false;
+        // if (OrderEntity?.BuyerId != _userId)
+        //     return false;
         //Remove the Order from the DbContext and asasert that the one change was saved
-        _dbContext.Orders.Remove(OrderEntity);
+        _dbContext.Orders.Remove(orderEntity);
         return await _dbContext.SaveChangesAsync() == 1;
     }
 

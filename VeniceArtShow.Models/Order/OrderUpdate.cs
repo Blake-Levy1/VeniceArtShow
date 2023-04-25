@@ -13,9 +13,9 @@ public class OrderUpdate
 
     [MinLength(2, ErrorMessage = "{0} must be at least {1} characters long.")]
     [MaxLength(100, ErrorMessage = "{0} must contain no more than {1} characters.")]
-    public string Title { get; set; }
+    public string ProductTitle { get; set; }
 
     [Required]
-    public int Price { get; set; }
+    public string Price { get; set; }
 
 }

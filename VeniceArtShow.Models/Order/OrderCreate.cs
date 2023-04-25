@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
         [Required]
         public int ArtistId { get; set; }
         [Required]
-        public string Price { get; set; }
+        public int Price { get; set; }
         [Required]
         public int BuyerId { get; set; }
     }
