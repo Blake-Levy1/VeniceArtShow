@@ -12,5 +12,5 @@ public interface IMediaService
 
     Task<bool> UpdateMediaAsync(MediaUpdate model);
 
-    Task<bool> DeleteMediaAsync(int id);
+    // Task<bool> DeleteMediaAsync(int id);
 }

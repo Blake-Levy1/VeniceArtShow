@@ -61,7 +61,10 @@ public class UserService : IUserService
     public async Task<bool> UpdateUserAsync(UserUpdate request)
     {
         var userEntity = await _dbContext.Users.FindAsync(request.Id);
-
+        if(userEntity?.Id != request.Id)
+        {
+            return false;
+        }
         userEntity.UserName = request.Username;
         userEntity.FirstName = request.Firstname;
         userEntity.LastName = request.Lastname;
@@ -74,14 +77,14 @@ public class UserService : IUserService
         return numberOfChanges == 1;
     }
 
-    public async Task<bool> DeleteUserAsync(int Id)
+    public async Task<bool> DeleteUserAsync(int id)
     {
-        var userEntity = await _dbContext.Products.FindAsync(Id);
+        var userEntity = await _dbContext.Users.FindAsync(id);
 
-        if (userEntity.Id != Id)
-            return false;
+        // if (userEntity.Id != Id)
+        //     return false;
 
-        _dbContext.Products.Remove(userEntity);
+        _dbContext.Users.Remove(userEntity);
         return await _dbContext.SaveChangesAsync() == 1;
     }
 

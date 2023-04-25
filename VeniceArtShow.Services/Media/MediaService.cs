@@ -49,15 +49,15 @@ public class MediaService : IMediaService
         return (await _dbContext.SaveChangesAsync() == 1);
     }
 
+ //No Active Delete Method - Each product in the databse has a media attached, so we are opting to not pursue a Delete option as it will affect products already present
+    // public async Task<bool> DeleteMediaAsync(int id)
+    // {
+    //     //Find by MediaId
+    //     var mediaEntity = await _dbContext.Medias.FindAsync(id);
 
-    public async Task<bool> DeleteMediaAsync(int id)
-    {
-        //Find by MediaId
-        var mediaEntity = await _dbContext.Medias.FindAsync(id);
-
-        //Remove MediaType 
-        _dbContext.Medias.Remove(mediaEntity);
-        return await _dbContext.SaveChangesAsync() == 1;
-    }
+    //     //Remove MediaType 
+    //     _dbContext.Medias.Remove(mediaEntity);
+    //     return await _dbContext.SaveChangesAsync() == 1;
+    // }
 
 }
