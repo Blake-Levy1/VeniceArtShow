@@ -8,11 +8,12 @@ using System.ComponentModel.DataAnnotations;
     public class OrderCreate
     {
         [Required]
+        public int BuyerId { get; set; }
+        [Required]
         public int ProductId { get; set; }
         [Required]
         public int ArtistId { get; set; }
         [Required]
-        public string Price { get; set; }
-        [Required]
-        public int BuyerId { get; set; }
+        public double Price { get; set; }
+        
     }

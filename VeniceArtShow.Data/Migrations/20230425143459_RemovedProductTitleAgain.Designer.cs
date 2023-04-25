@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace VeniceArtShow.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230424133033_MondayMorning")]
-    partial class MondayMorning
+    [Migration("20230425143459_RemovedProductTitleAgain")]
+    partial class RemovedProductTitleAgain
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,14 +36,21 @@ namespace VeniceArtShow.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderEntityId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderEntityId");
-
                     b.ToTable("Medias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            MediaType = "Painting"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            MediaType = "Photograph"
+                        });
                 });
 
             modelBuilder.Entity("OrderEntity", b =>
@@ -54,40 +61,32 @@ namespace VeniceArtShow.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ArtistId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ArtistId1")
+                    b.Property<int>("ArtistId")
                         .HasColumnType("int");
 
-                    b.Property<string>("BuyerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("BuyerId1")
+                    b.Property<int>("BuyerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("CreatedUtc")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedUtc")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("MediaId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("ModifiedUtc")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("ModifiedUtc")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtistId1");
+                    b.HasIndex("ArtistId");
 
-                    b.HasIndex("BuyerId1");
+                    b.HasIndex("BuyerId");
 
                     b.HasIndex("MediaId");
 
@@ -105,8 +104,8 @@ namespace VeniceArtShow.Data.Migrations
                     b.Property<int>("ArtistId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("DateListed")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("DateListed")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -133,6 +132,30 @@ namespace VeniceArtShow.Data.Migrations
                     b.HasIndex("MediaId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ArtistId = 1,
+                            DateListed = new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6690),
+                            Description = "Painting of Mona Lisa in style of Edward Hopper",
+                            ImageUrl = "https://effinghamdailynews.com/today",
+                            MediaId = 1,
+                            Price = 4.9900000000000002,
+                            Title = "Nighthawks Nona Lisa"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ArtistId = 2,
+                            DateListed = new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6690),
+                            Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
+                            ImageUrl = "https://hollyjanedie.com",
+                            MediaId = 2,
+                            Price = 40.530000000000001,
+                            Title = "Sirens That Make You Scream"
+                        });
                 });
 
             modelBuilder.Entity("UserEntity", b =>
@@ -147,8 +170,8 @@ namespace VeniceArtShow.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -162,9 +185,6 @@ namespace VeniceArtShow.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("OrderEntityId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -175,36 +195,51 @@ namespace VeniceArtShow.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderEntityId");
-
                     b.ToTable("Users");
-                });
 
-            modelBuilder.Entity("MediaEntity", b =>
-                {
-                    b.HasOne("OrderEntity", null)
-                        .WithMany("Artworks")
-                        .HasForeignKey("OrderEntityId");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
+                            DateCreated = new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6540),
+                            Email = "unbricker@efa.org",
+                            FirstName = "Horace",
+                            LastName = "Greenbottom",
+                            Password = "openSesame32211!",
+                            UserName = "bricksRnotUs"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
+                            DateCreated = new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6600),
+                            Email = "thingPainter@efa.org",
+                            FirstName = "Holly",
+                            LastName = "Janedie",
+                            Password = "8dj23jdjdj1++",
+                            UserName = "LotsOfThingsToPaint"
+                        });
                 });
 
             modelBuilder.Entity("OrderEntity", b =>
                 {
-                    b.HasOne("UserEntity", "Artist")
+                    b.HasOne("ProductEntity", "Artist")
                         .WithMany()
-                        .HasForeignKey("ArtistId1")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("ArtistId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("UserEntity", "Buyer")
                         .WithMany()
-                        .HasForeignKey("BuyerId1")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("BuyerId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MediaEntity", "Media")
                         .WithMany()
                         .HasForeignKey("MediaId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Artist");
@@ -219,32 +254,18 @@ namespace VeniceArtShow.Data.Migrations
                     b.HasOne("UserEntity", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MediaEntity", "Media")
                         .WithMany()
                         .HasForeignKey("MediaId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Artist");
 
                     b.Navigation("Media");
-                });
-
-            modelBuilder.Entity("UserEntity", b =>
-                {
-                    b.HasOne("OrderEntity", null)
-                        .WithMany("Owners")
-                        .HasForeignKey("OrderEntityId");
-                });
-
-            modelBuilder.Entity("OrderEntity", b =>
-                {
-                    b.Navigation("Artworks");
-
-                    b.Navigation("Owners");
                 });
 #pragma warning restore 612, 618
         }

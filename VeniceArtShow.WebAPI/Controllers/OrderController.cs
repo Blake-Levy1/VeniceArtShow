@@ -30,20 +30,20 @@ public class OrderController : ControllerBase
         return BadRequest("Order could not be created.");
     }
 
-    // PUT api/Order
-    [HttpPut("{orderId:int}")]
-    public async Task<IActionResult> UpdateOrderById([FromBody] OrderUpdate request)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+    // // PUT api/Order
+    // [HttpPut("{orderId:int}")]
+    // public async Task<IActionResult> UpdateOrderById([FromBody] OrderUpdate request)
+    // {
+    //     if (!ModelState.IsValid)
+    //         return BadRequest(ModelState);
 
-        return await _orderService.UpdateOrderAsync(request)
-            ? Ok("Order updated successfullly.")
-            : BadRequest("The Order could not be updated.");
-    }
+    //     return await _orderService.UpdateOrderAsync(request)
+    //         ? Ok("Order updated successfullly.")
+    //         : BadRequest("The Order could not be updated.");
+    // }
 
     //Get api/Order
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<IActionResult> GetAllOrders()
     {
         var orders = await _orderService.GetAllOrdersAsync();
@@ -51,8 +51,8 @@ public class OrderController : ControllerBase
     }
 
     // [Authorize]
-    [HttpGet("{buyerId:int}")]
-    public async Task<IActionResult> GetOrderByBuyerId([FromRoute] int buyerId)
+    [HttpGet("BuyerId")]
+    public async Task<IActionResult> GetOrderByBuyerId([FromBody] int buyerId)
     {
         var userDetail = await _orderService.GetAllOrdersAsync();
         if (userDetail is null)
@@ -63,7 +63,7 @@ public class OrderController : ControllerBase
     }
     // [Authorize]
     [HttpGet("ArtistId")]
-    public async Task<IActionResult> GetOrderByArtistId([FromBody] GetOrdersByArtistId request)
+    public async Task<IActionResult> GetOrderByArtistId([FromBody] GetOrdersByBuyerOrArtistId request)
     {
         var userDetail = await _orderService.GetOrdersByArtistIdAsync(request);
         if (userDetail is null)
@@ -73,8 +73,8 @@ public class OrderController : ControllerBase
         return Ok(userDetail);
         }
         // [Authorize]
-        [HttpGet("{productId:int}")]
-        public async Task<IActionResult> GetOrdersByProductIdAsync([FromRoute] int productId)
+        [HttpGet("ProductId")]
+        public async Task<IActionResult> GetOrdersByProductIdAsync([FromBody] int productId)
         {
             var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
             if (userDetail is null)
@@ -83,15 +83,25 @@ public class OrderController : ControllerBase
             }
             return Ok(userDetail);
         }
-        // [Authorize]
-        [HttpGet("{createdUtc}")]
-        public async Task<IActionResult> GetOrdersByPurchaseDate(DateTime createdUtc)
+        [HttpGet("OrderId")]  
+        public async Task<IActionResult> GetOrdersByOrderIdAsync([FromBody] int orderId)
         {
-            var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
+            var userDetail = await _orderService.GetOrdersByOrderIdAsync(orderId);
             if (userDetail is null)
             {
-                return NotFound();
+                return BadRequest("Order not found. (Chaos results.)");
             }
             return Ok(userDetail);
         }
+        //ByPurchaseDate moved to Stretch Goal to handle peculiarities of Time elements after MVP        // [Authorize]
+        // [HttpGet("CreatedUtc")]
+        // public async Task<IActionResult> GetOrdersByPurchaseDate([FromBody] DateTime createdUtc)
+        // {
+        //     var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
+        //     if (userDetail is null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return Ok(userDetail);
+        // }
     }
