@@ -44,23 +44,23 @@ public class OrderController : ControllerBase
 
     //Get api/Order
     [HttpGet("GetAll")]
-    public async Task<IActionResult> GetAllOrders()
+    public async Task<IActionResult> GetAllOrders(int buyerId)
     {
-        var orders = await _orderService.GetAllOrdersAsync();
+        var orders = await _orderService.GetAllOrdersAsync(buyerId);
         return Ok(orders);
     }
 
     // [Authorize]
-    [HttpGet("BuyerId")]
-    public async Task<IActionResult> GetOrderByBuyerId([FromBody] int buyerId)
-    {
-        var userDetail = await _orderService.GetAllOrdersAsync();
-        if (userDetail is null)
-        {
-            return NotFound();
-        }
-        return Ok(userDetail);
-    }
+    // [HttpGet("BuyerId")]
+    // public async Task<IActionResult> GetOrderByBuyerId([FromBody] int buyerId)
+    // {
+    //     var userDetail = await _orderService.GetAllOrdersAsync(buyerId);
+    //     if (userDetail is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return Ok(userDetail);
+    // }
     // [Authorize]
     [HttpGet("ArtistId")]
     public async Task<IActionResult> GetOrderByArtistId([FromBody] GetOrdersByBuyerOrArtistId request)

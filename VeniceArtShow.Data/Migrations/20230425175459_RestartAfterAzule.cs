@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VeniceArtShow.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class TuesdayFortuata : Migration
+    public partial class RestartAfterAzule : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -83,23 +83,14 @@ namespace VeniceArtShow.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CreatedUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ModifiedUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BuyerId = table.Column<int>(type: "int", nullable: false),
-                    MediaId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
-                    ProductTitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ArtistId = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Medias_MediaId",
-                        column: x => x.MediaId,
-                        principalTable: "Medias",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Orders_Products_ArtistId",
                         column: x => x.ArtistId,
@@ -128,8 +119,8 @@ namespace VeniceArtShow.Data.Migrations
                 columns: new[] { "Id", "Biography", "DateCreated", "Email", "FirstName", "LastName", "Password", "UserName" },
                 values: new object[,]
                 {
-                    { 1, "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.", new DateTime(2023, 4, 25, 10, 21, 43, 135, DateTimeKind.Local).AddTicks(4720), "unbricker@efa.org", "Horace", "Greenbottom", "openSesame32211!", "bricksRnotUs" },
-                    { 2, "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.", new DateTime(2023, 4, 25, 10, 21, 43, 135, DateTimeKind.Local).AddTicks(4770), "thingPainter@efa.org", "Holly", "Janedie", "8dj23jdjdj1++", "LotsOfThingsToPaint" }
+                    { 1, "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.", new DateTime(2023, 4, 25, 13, 54, 58, 927, DateTimeKind.Local).AddTicks(8430), "unbricker@efa.org", "Horace", "Greenbottom", "openSesame32211!", "bricksRnotUs" },
+                    { 2, "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.", new DateTime(2023, 4, 25, 13, 54, 58, 927, DateTimeKind.Local).AddTicks(8480), "thingPainter@efa.org", "Holly", "Janedie", "8dj23jdjdj1++", "LotsOfThingsToPaint" }
                 });
 
             migrationBuilder.InsertData(
@@ -137,8 +128,8 @@ namespace VeniceArtShow.Data.Migrations
                 columns: new[] { "Id", "ArtistId", "DateListed", "Description", "ImageUrl", "MediaId", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 4, 25, 10, 21, 43, 135, DateTimeKind.Local).AddTicks(4860), "Painting of Mona Lisa in style of Edward Hopper", "https://effinghamdailynews.com/today", 1, 4.9900000000000002, "Nighthawks Nona Lisa" },
-                    { 2, 2, new DateTime(2023, 4, 25, 10, 21, 43, 135, DateTimeKind.Local).AddTicks(4860), "A depiction of sound which is like but not the same as that Scream painting by Edward Munch", "https://hollyjanedie.com", 2, 40.530000000000001, "Sirens That Make You Scream" }
+                    { 1, 1, new DateTime(2023, 4, 25, 13, 54, 58, 927, DateTimeKind.Local).AddTicks(8632), "Painting of Mona Lisa in style of Edward Hopper", "https://effinghamdailynews.com/today", 1, 4.9900000000000002, "Nighthawks Nona Lisa" },
+                    { 2, 2, new DateTime(2023, 4, 25, 13, 54, 58, 927, DateTimeKind.Local).AddTicks(8635), "A depiction of sound which is like but not the same as that Scream painting by Edward Munch", "https://hollyjanedie.com", 2, 40.530000000000001, "Sirens That Make You Scream" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -150,11 +141,6 @@ namespace VeniceArtShow.Data.Migrations
                 name: "IX_Orders_BuyerId",
                 table: "Orders",
                 column: "BuyerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Orders_MediaId",
-                table: "Orders",
-                column: "MediaId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ArtistId",

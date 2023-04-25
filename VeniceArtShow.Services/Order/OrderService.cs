@@ -59,10 +59,9 @@ public class OrderService : IOrderService
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        // .Where(entity => entity.BuyerId == _userId && entity.OrderId == orderId)
+        .Where(entity => entity.Id == orderId)
         .Select(entity => new OrderListItem
         {
-
             Id = entity.Id
         })
         .ToListAsync();
@@ -78,8 +77,9 @@ public class OrderService : IOrderService
         .Select(entity => new OrderListItem
         {
             Id = entity.Id,
-            ArtistId = entity.ArtistId,
+            BuyerId = entity.BuyerId,
             ProductId = entity.ProductId,
+            ArtistId = entity.ArtistId,
             CreatedUtc = entity.CreatedUtc
         })
         .ToListAsync();
@@ -99,13 +99,16 @@ public class OrderService : IOrderService
     //     return orders;
     // }
 
-    public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync()
+    //Currently "GetAllOrdersAsync" is pulling by the buyer id passed in. Not all orders in the database as a whole. Our vision is to have the buyer driving the requests. If we were to add another method to pull ALL orders in database, we could do a "GetAllOrdersByAllBuyers"
+    public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync(int buyerId)
     {
         var orders = await _dbContext.Orders
-        // .Where(entity => entity.BuyerId == _userId)
+        .Where(entity => entity.BuyerId == buyerId)
         .Select(entity => new OrderListItem
         {
             Id = entity.Id,
+            BuyerId = entity.BuyerId,
+            ProductId = entity.ProductId,
             CreatedUtc = entity.CreatedUtc
         })
         .ToListAsync();
@@ -153,9 +156,11 @@ public class OrderService : IOrderService
 
         {
             Id = orderEntity.Id,
-            Price = orderEntity.Price,
+            BuyerId = orderEntity.BuyerId,
             ProductId = orderEntity.ProductId,
+            ArtistId = orderEntity.ArtistId,
             // MediaId = orderEntity.MediaId,
+            Price = orderEntity.Price,
             CreatedUtc = orderEntity.CreatedUtc,
             // ModifiedUtc = orderEntity.ModifiedUtc
         };
