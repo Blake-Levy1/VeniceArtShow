@@ -57,6 +57,8 @@ public class ProductController : ControllerBase
     [HttpDelete("{productId:int}")]
     public async Task<IActionResult> DeleteProduct([FromRoute] int productId)
     {
+        
+
         return await _productService.DeleteProductAsync(productId)
         ? Ok($"Product {productId} was deleted successfully.")
         : BadRequest($"Product {productId} could not be deleted.");

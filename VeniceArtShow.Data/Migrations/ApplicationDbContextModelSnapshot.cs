@@ -127,7 +127,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             ArtistId = 1,
-                            DateListed = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1570),
+                            DateListed = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4870),
                             Description = "Painting of Mona Lisa in style of Edward Hopper",
                             ImageUrl = "https://effinghamdailynews.com/today",
                             MediaId = 1,
@@ -138,7 +138,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             ArtistId = 2,
-                            DateListed = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1570),
+                            DateListed = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4870),
                             Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
                             ImageUrl = "https://hollyjanedie.com",
                             MediaId = 2,
@@ -191,7 +191,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
-                            DateCreated = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1440),
+                            DateCreated = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4700),
                             Email = "unbricker@efa.org",
                             FirstName = "Horace",
                             LastName = "Greenbottom",
@@ -202,7 +202,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
-                            DateCreated = new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1480),
+                            DateCreated = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4780),
                             Email = "thingPainter@efa.org",
                             FirstName = "Holly",
                             LastName = "Janedie",
@@ -222,12 +222,6 @@ namespace VeniceArtShow.Data.Migrations
                     b.HasOne("UserEntity", "Buyer")
                         .WithMany()
                         .HasForeignKey("BuyerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MediaEntity", "Media")
-                        .WithMany()
-                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
