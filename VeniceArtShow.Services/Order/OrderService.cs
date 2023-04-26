@@ -172,7 +172,4 @@ public class OrderService : IOrderService
         _dbContext.Orders.Remove(orderEntity);
         return await _dbContext.SaveChangesAsync() == 1;
     }
-
-    //Could add another helper method here to SearchById or one for SearchByPrice etc for use in other methods
-    //This line for a test of git push
 }
