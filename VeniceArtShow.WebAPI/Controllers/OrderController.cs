@@ -44,7 +44,7 @@ public class OrderController : ControllerBase
 
     //Get api/Order
     [HttpGet("GetAll")]
-    public async Task<IActionResult> GetAllOrders(int buyerId)
+    public async Task<IActionResult> GetAllOrders([FromBody] int buyerId)
     {
         var orders = await _orderService.GetAllOrdersAsync(buyerId);
         return Ok(orders);

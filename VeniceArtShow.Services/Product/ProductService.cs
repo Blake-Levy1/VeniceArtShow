@@ -22,12 +22,15 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
-            // .Where(entity => entity.ArtistId == _userId)
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
 
@@ -57,7 +60,9 @@ public class ProductService : IProductService
     public async Task<ProductDetail> GetProductByIdAsync(int productId)
     {
         // SetUserId();
-        var productEntity = await _dbContext.Products.Include(x => x.Media)
+        var productEntity = await _dbContext.Products
+            .Include(x => x.Media)
+            .Include(x => x.Artist)
             .FirstOrDefaultAsync(e =>
                 e.Id == productId);
 
@@ -65,12 +70,12 @@ public class ProductService : IProductService
         {
             Id = productEntity.Id,
             Title = productEntity.Title,
+            Artist = productEntity.Artist.UserName,
             ImageUrl = productEntity.ImageUrl,
+            MediaType = productEntity.Media.MediaType,
             Description = productEntity.Description,
             Price = productEntity.Price,
-            DateListed = DateTime.Now,
-            MediaId = productEntity.MediaId
-            // Media = productEntity.Media
+            DateListed = productEntity.DateListed.ToString()
         };
     }
 
@@ -105,12 +110,16 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.Title == productTitle)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;
@@ -120,12 +129,16 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.MediaId == mediaId)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;
@@ -137,12 +150,16 @@ public class ProductService : IProductService
         double lowPrice = Convert.ToDouble(search.LowPrice);
         double highPrice = Convert.ToDouble(search.HighPrice);
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.Price >= lowPrice && entity.Price <= highPrice)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;
@@ -152,12 +169,16 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.ArtistId == artistId)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;
