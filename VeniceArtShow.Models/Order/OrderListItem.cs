@@ -9,8 +9,8 @@ using System.ComponentModel.DataAnnotations;
 public class OrderListItem
 {
     public int Id { get; set; }
-    public int BuyerId { get; set; }
-    public int ProductId { get; set; }
-    public int ArtistId { get; set; }
-    public DateTime CreatedUtc { get; set; }
+    public string Buyer { get; set; }
+    public string Artist { get; set; }
+    public string Product { get; set; }
+    public string CreatedUtc { get; set; }
 }

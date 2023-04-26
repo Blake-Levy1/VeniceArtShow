@@ -12,7 +12,7 @@ public class ProductDetail
     public string MediaType { get; set; }
     public string Description { get; set; }
     public double Price { get; set; }
-    public DateTimeOffset DateListed { get; set; }
+    public string DateListed { get; set; }
     // public int MediaId { get; set; }
     // public MediaEntity Media { get; set; } 
     // would need access to MediaEntity to return Media Type

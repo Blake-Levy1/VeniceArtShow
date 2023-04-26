@@ -9,5 +9,5 @@ public class ProductListItem
     public string Title { get; set; }
     public string Artist { get; set; }
     public string MediaType { get; set; }
-    public DateTimeOffset DateListed { get; set; }
+    public string DateListed { get; set; }
 }

@@ -30,7 +30,7 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
 
@@ -75,7 +75,7 @@ public class ProductService : IProductService
             MediaType = productEntity.Media.MediaType,
             Description = productEntity.Description,
             Price = productEntity.Price,
-            DateListed = DateTime.Now
+            DateListed = productEntity.DateListed.ToString()
         };
     }
 
@@ -119,7 +119,7 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;
@@ -138,7 +138,7 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;
@@ -159,7 +159,7 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;
@@ -178,7 +178,7 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed
+                DateListed = entity.DateListed.ToString()
             })
             .ToListAsync();
         return products;

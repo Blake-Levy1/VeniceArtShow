@@ -43,11 +43,17 @@ public class OrderService : IOrderService
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == request.BuyerId && entity.ArtistId == request.ArtistId)
-        .Select(entity => new OrderListItem
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.BuyerId == request.BuyerId && entity.ArtistId == request.ArtistId)
+            .Select(entity => new OrderListItem
         {
             Id = entity.Id,
-            ArtistId = entity.ArtistId
+            Buyer = entity.Buyer.UserName,
+            Artist = entity.Artist.UserName,
+            Product = entity.Product.Title,
+            CreatedUtc = entity.CreatedUtc.ToString()
         })
         .ToListAsync();
         return orders;
@@ -55,36 +61,45 @@ public class OrderService : IOrderService
 
 
     public async Task<IEnumerable<OrderListItem>> GetOrdersByOrderIdAsync(int orderId)
-    
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.Id == orderId)
-        .Select(entity => new OrderListItem
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.Id == orderId)
+            .Select(entity => new OrderListItem
         {
-            Id = entity.Id
+            Id = entity.Id,
+            Buyer = entity.Buyer.UserName,
+            Artist = entity.Artist.UserName,
+            Product = entity.Product.Title,
+            CreatedUtc = entity.CreatedUtc.ToString()
         })
         .ToListAsync();
         return orders;
     }
 
     public async Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId)
-    
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.ProductId == productId)
-        .Select(entity => new OrderListItem
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.ProductId == productId)
+            .Select(entity => new OrderListItem
         {
             Id = entity.Id,
-            BuyerId = entity.BuyerId,
-            ProductId = entity.ProductId,
-            ArtistId = entity.ArtistId,
-            CreatedUtc = entity.CreatedUtc
+            Buyer = entity.Buyer.UserName,
+            Artist = entity.Artist.UserName,
+            Product = entity.Product.Title,
+            CreatedUtc = entity.CreatedUtc.ToString()
         })
         .ToListAsync();
         return orders;
     }
+
     // public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc)
     // {
     //     var orders = await _dbContext.Orders
@@ -103,13 +118,17 @@ public class OrderService : IOrderService
     public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync(int buyerId)
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == buyerId)
-        .Select(entity => new OrderListItem
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.BuyerId == buyerId)
+            .Select(entity => new OrderListItem
         {
             Id = entity.Id,
-            BuyerId = entity.BuyerId,
-            ProductId = entity.ProductId,
-            CreatedUtc = entity.CreatedUtc
+            Buyer = entity.Buyer.UserName,
+            Artist = entity.Artist.UserName,
+            Product = entity.Product.Title,
+            CreatedUtc = entity.CreatedUtc.ToString()
         })
         .ToListAsync();
         // .AsQueryable() --> may be way to go in future
@@ -139,32 +158,34 @@ public class OrderService : IOrderService
     //     return numberOfChanges == 1;
     // }
 
-    public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
-    {
-            //Find the first order that has the given Id and an Owner Id that matches the requesting userId
-        var orderEntity = await _dbContext.Orders
-        .FirstOrDefaultAsync(e =>
-            e.Id == orderId);
-        return orderEntity is null ? null : new OrderDetail
+    // public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
+    // {
+    //         //Find the first order that has the given Id and an Owner Id that matches the requesting userId
+    //     var orderEntity = await _dbContext.Orders
+    //         .Include(x => x.Artist)
+    //         .FirstOrDefaultAsync(e =>
+    //             e.Id == orderId);
+
+    //     return orderEntity is null ? null : new OrderDetail
         
         
-        // var OrderEntity = await _dbContext.Orders.FirstOrDefaultAsync(predicate: e=>
-        //     e.Id == orderId && e.BuyerId == buyerId);
+    //     // var OrderEntity = await _dbContext.Orders.FirstOrDefaultAsync(predicate: e=>
+    //     //     e.Id == orderId && e.BuyerId == buyerId);
 
-        // (e => e.Id == orderId && e.ArtistId == artistId);
-        //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
+    //     // (e => e.Id == orderId && e.ArtistId == artistId);
+    //     //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
 
-        {
-            Id = orderEntity.Id,
-            BuyerId = orderEntity.BuyerId,
-            ProductId = orderEntity.ProductId,
-            ArtistId = orderEntity.ArtistId,
-            // MediaId = orderEntity.MediaId,
-            Price = orderEntity.Price,
-            CreatedUtc = orderEntity.CreatedUtc,
-            // ModifiedUtc = orderEntity.ModifiedUtc
-        };
-    }
+    //     {
+    //         Id = orderEntity.Id,
+    //         BuyerId = orderEntity.BuyerId,
+    //         ProductId = orderEntity.ProductId,
+    //         Artist = orderEntity.Artist.UserName,
+    //         // MediaId = orderEntity.MediaId,
+    //         Price = orderEntity.Price,
+    //         CreatedUtc = orderEntity.CreatedUtc,
+    //         // ModifiedUtc = orderEntity.ModifiedUtc
+    //     };
+    // }
 
     public async Task<bool> DeleteOrderAsync(int orderId)
     {

@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations;
         public int Id { get; set; }
         public int BuyerId { get; set; }
         public int ProductId { get; set; }
-        public int ArtistId { get; set; }
+        public string Artist { get; set; }
         public double Price { get; set; }
         // public int MediaId { get; set; }
         public DateTimeOffset CreatedUtc { get; set; }
