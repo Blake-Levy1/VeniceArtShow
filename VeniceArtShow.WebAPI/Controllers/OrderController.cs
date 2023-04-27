@@ -95,20 +95,20 @@ public class OrderController : ControllerBase
             }
             return Ok(userDetail);
         }
-       
-        [Authorize(Policy = "Email")]
-        [HttpPost("OrderDetail")]
-        public async  Task<IActionResult> GetOrderDetailAsync([FromBody] int orderId)
+    
+        // [Authorize(Policy = "Email")]
+        [HttpGet("OrderDetail/{orderId:int}")]
+        public async  Task<IActionResult> GetOrderDetailAsync([FromRoute]int orderId, [FromBody] OrderDetailAuthorization authEmail)
         {
             var orderDetail = await _orderService.GetOrderDetailAsync(orderId);
-            if (orderDetail.email == "admin@veniceart.show")  
+            if (authEmail.AuthAdminEmail == "admin@veniceart.show")  
             {
                 return Ok(orderDetail);
             }  
             
             return BadRequest("You are not authorized to see Order Details.");
         }
-           
+    
 
         //ByPurchaseDate moved to Stretch Goal to handle peculiarities of Time elements after MVP        // [Authorize]
         // [HttpGet("CreatedUtc")]

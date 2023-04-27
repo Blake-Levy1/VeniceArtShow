@@ -79,6 +79,8 @@ namespace VeniceArtShow.Data.Migrations
 
                     b.HasIndex("BuyerId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("Orders");
                 });
 
@@ -127,7 +129,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             ArtistId = 1,
-                            DateListed = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4870),
+                            DateListed = new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2490),
                             Description = "Painting of Mona Lisa in style of Edward Hopper",
                             ImageUrl = "https://effinghamdailynews.com/today",
                             MediaId = 1,
@@ -138,7 +140,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             ArtistId = 2,
-                            DateListed = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4870),
+                            DateListed = new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2490),
                             Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
                             ImageUrl = "https://hollyjanedie.com",
                             MediaId = 2,
@@ -191,7 +193,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
-                            DateCreated = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4700),
+                            DateCreated = new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2350),
                             Email = "unbricker@efa.org",
                             FirstName = "Horace",
                             LastName = "Greenbottom",
@@ -202,7 +204,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
-                            DateCreated = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4780),
+                            DateCreated = new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2400),
                             Email = "thingPainter@efa.org",
                             FirstName = "Holly",
                             LastName = "Janedie",
@@ -213,7 +215,7 @@ namespace VeniceArtShow.Data.Migrations
 
             modelBuilder.Entity("OrderEntity", b =>
                 {
-                    b.HasOne("ProductEntity", "Artist")
+                    b.HasOne("UserEntity", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -225,9 +227,17 @@ namespace VeniceArtShow.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ProductEntity", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Artist");
 
                     b.Navigation("Buyer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ProductEntity", b =>

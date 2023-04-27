@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 object value = builder.Services.AddAuthorization(options => 
     {
-        options.AddPolicy("EmailID", policy =>
+        options.AddPolicy("Email", policy =>
             {
                 policy.RequireClaim("https://admin.veniceart.show", "admin@veniceart.show"
         );
