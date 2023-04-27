@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace VeniceArtShow.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230426190035_AuthoEmail1")]
-    partial class AuthoEmail1
+    [Migration("20230427185122_StillMVP")]
+    partial class StillMVP
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,17 +64,11 @@ namespace VeniceArtShow.Data.Migrations
                     b.Property<int>("ArtistId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BuyerEmail")
-                        .HasColumnType("int");
-
                     b.Property<int>("BuyerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("EmailId")
-                        .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -87,8 +81,6 @@ namespace VeniceArtShow.Data.Migrations
                     b.HasIndex("ArtistId");
 
                     b.HasIndex("BuyerId");
-
-                    b.HasIndex("EmailId");
 
                     b.HasIndex("ProductId");
 
@@ -117,6 +109,9 @@ namespace VeniceArtShow.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSold")
+                        .HasColumnType("bit");
+
                     b.Property<int>("MediaId")
                         .HasColumnType("int");
 
@@ -140,9 +135,10 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             ArtistId = 1,
-                            DateListed = new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9980),
+                            DateListed = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240),
                             Description = "Painting of Mona Lisa in style of Edward Hopper",
                             ImageUrl = "https://effinghamdailynews.com/today",
+                            IsSold = false,
                             MediaId = 1,
                             Price = 4.9900000000000002,
                             Title = "Nighthawks Nona Lisa"
@@ -151,9 +147,10 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             ArtistId = 2,
-                            DateListed = new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9990),
+                            DateListed = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240),
                             Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
                             ImageUrl = "https://hollyjanedie.com",
+                            IsSold = false,
                             MediaId = 2,
                             Price = 40.530000000000001,
                             Title = "Sirens That Make You Scream"
@@ -204,7 +201,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
-                            DateCreated = new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9830),
+                            DateCreated = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2110),
                             Email = "unbricker@efa.org",
                             FirstName = "Horace",
                             LastName = "Greenbottom",
@@ -215,7 +212,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
-                            DateCreated = new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9900),
+                            DateCreated = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2150),
                             Email = "thingPainter@efa.org",
                             FirstName = "Holly",
                             LastName = "Janedie",
@@ -238,12 +235,6 @@ namespace VeniceArtShow.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("UserEntity", "Email")
-                        .WithMany()
-                        .HasForeignKey("EmailId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("ProductEntity", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -253,8 +244,6 @@ namespace VeniceArtShow.Data.Migrations
                     b.Navigation("Artist");
 
                     b.Navigation("Buyer");
-
-                    b.Navigation("Email");
 
                     b.Navigation("Product");
                 });
