@@ -203,6 +203,8 @@ public class OrderService : IOrderService
         return await _dbContext.SaveChangesAsync() == 1;
     }
 
+    //Could add another helper method here to SearchById or one for SearchByPrice etc for use in other methods
+    //This line for a test of git push 
     public async Task<bool> MarkProductAsSold(int productId)
     {
         ProductEntity productSold = await _dbContext.Products.FindAsync(productId);
