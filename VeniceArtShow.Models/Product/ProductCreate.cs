@@ -22,4 +22,6 @@ public class ProductCreate
     public int ArtistId { get; set; }
     [Required]
     public int MediaId { get; set; }
+
+
 }

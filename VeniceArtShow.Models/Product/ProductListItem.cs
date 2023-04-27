@@ -10,4 +10,5 @@ public class ProductListItem
     public string Artist { get; set; }
     public string MediaType { get; set; }
     public string DateListed { get; set; }
+    public bool IsSold { get; set; }
 }
