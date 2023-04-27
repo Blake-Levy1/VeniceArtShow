@@ -17,7 +17,7 @@ public class ProductEntity
     public string Description { get; set; }
     [ForeignKey(nameof(Artist))]
     public int ArtistId { get; set; }
-    public UserEntity Artist { get; set; }
+    public virtual UserEntity Artist { get; set; }
     [Required]
     public double Price { get; set; }
     [Required]
@@ -25,4 +25,5 @@ public class ProductEntity
     [ForeignKey(nameof(Media))]
     public int MediaId { get; set; }
     public virtual MediaEntity Media { get; set; }
+    public bool IsSold { get; set; }
 }

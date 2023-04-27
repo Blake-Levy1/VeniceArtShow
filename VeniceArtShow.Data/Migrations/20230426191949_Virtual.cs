@@ -6,25 +6,25 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VeniceArtShow.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class TuesdayRootOut : Migration
+    public partial class Virtual : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Orders_Medias_MediaId",
+                name: "FK_Orders_Users_EmailId",
                 table: "Orders");
 
             migrationBuilder.DropIndex(
-                name: "IX_Orders_MediaId",
+                name: "IX_Orders_EmailId",
                 table: "Orders");
 
             migrationBuilder.DropColumn(
-                name: "MediaId",
+                name: "BuyerEmail",
                 table: "Orders");
 
             migrationBuilder.DropColumn(
-                name: "ModifiedUtc",
+                name: "EmailId",
                 table: "Orders");
 
             migrationBuilder.UpdateData(
@@ -32,87 +32,87 @@ namespace VeniceArtShow.Data.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateListed",
-                value: new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1570));
+                value: new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2490));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateListed",
-                value: new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1570));
+                value: new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2490));
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1440));
+                value: new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2350));
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTime(2023, 4, 25, 10, 58, 47, 53, DateTimeKind.Local).AddTicks(1480));
+                value: new DateTime(2023, 4, 26, 15, 19, 49, 528, DateTimeKind.Local).AddTicks(2400));
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "MediaId",
+                name: "BuyerEmail",
                 table: "Orders",
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "ModifiedUtc",
+            migrationBuilder.AddColumn<int>(
+                name: "EmailId",
                 table: "Orders",
-                type: "datetime2",
+                type: "int",
                 nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+                defaultValue: 0);
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateListed",
-                value: new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6690));
+                value: new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9980));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateListed",
-                value: new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6690));
+                value: new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9990));
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "DateCreated",
-                value: new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6540));
+                value: new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9830));
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "DateCreated",
-                value: new DateTime(2023, 4, 25, 10, 34, 59, 21, DateTimeKind.Local).AddTicks(6600));
+                value: new DateTime(2023, 4, 26, 15, 0, 35, 575, DateTimeKind.Local).AddTicks(9900));
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_MediaId",
+                name: "IX_Orders_EmailId",
                 table: "Orders",
-                column: "MediaId");
+                column: "EmailId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Orders_Medias_MediaId",
+                name: "FK_Orders_Users_EmailId",
                 table: "Orders",
-                column: "MediaId",
-                principalTable: "Medias",
+                column: "EmailId",
+                principalTable: "Users",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
         }
     }
 }

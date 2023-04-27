@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 public class OrderService : IOrderService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
+
     // private int _userId;
     private readonly ApplicationDbContext _dbContext;
-    public OrderService(IHttpContextAccessor httpContextAccessor, ApplicationDbContext dbContext)
+    public OrderService(ApplicationDbContext dbContext)
+
     {
         _dbContext = dbContext;
-        _httpContextAccessor = httpContextAccessor;
 
     }
     public async Task<bool> CreateOrderAsync(OrderCreate request)
@@ -34,57 +34,74 @@ public class OrderService : IOrderService
         _dbContext.Orders.Add(orderEntity);
 
         var numberOfChanges = await _dbContext.SaveChangesAsync();
+        MarkProductAsSold(request.ProductId);
         return numberOfChanges == 1;
+
     }
 
-     //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
+    //GetAllOrdersAsync is essentially same as GetAllOrdersByBuyer as check built-in
     //This becomes, in effect, a helper method, as the first steop in a GetAllOrdersByPurchaseDate???
     public async Task<IEnumerable<OrderListItem>> GetOrdersByArtistIdAsync(GetOrdersByBuyerOrArtistId request)
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.BuyerId == request.BuyerId && entity.ArtistId == request.ArtistId)
-        .Select(entity => new OrderListItem
-        {
-            Id = entity.Id,
-            ArtistId = entity.ArtistId
-        })
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.BuyerId == request.BuyerId && entity.ArtistId == request.ArtistId)
+            .Select(entity => new OrderListItem
+            {
+                Id = entity.Id,
+                Buyer = entity.Buyer.UserName,
+                Artist = entity.Artist.UserName,
+                Product = entity.Product.Title,
+                CreatedUtc = entity.CreatedUtc.ToString()
+            })
         .ToListAsync();
         return orders;
     }
 
 
-    public async Task<IEnumerable<OrderListItem>> GetOrdersByOrderIdAsync(int orderId)
-    
     // GetAllOrdersAsync().--> may be way to go in future
+    public async Task<IEnumerable<OrderListItem>> GetOrdersByOrderIdAsync(int orderId)
     {
         var orders = await _dbContext.Orders
-        // .Where(entity => entity.BuyerId == _userId && entity.OrderId == orderId)
-        .Select(entity => new OrderListItem
-        {
-
-            Id = entity.Id
-        })
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.Id == orderId)
+            .Select(entity => new OrderListItem
+            {
+                Id = entity.Id,
+                Buyer = entity.Buyer.UserName,
+                Artist = entity.Artist.UserName,
+                Product = entity.Product.Title,
+                CreatedUtc = entity.CreatedUtc.ToString()
+            })
         .ToListAsync();
         return orders;
     }
 
     public async Task<IEnumerable<OrderListItem>> GetOrdersByProductIdAsync(int productId)
-    
     // GetAllOrdersAsync().--> may be way to go in future
     {
         var orders = await _dbContext.Orders
-        .Where(entity => entity.ProductId == productId)
-        .Select(entity => new OrderListItem
-        {
-            Id = entity.Id,
-            ArtistId = entity.ArtistId,
-            ProductId = entity.ProductId,
-            CreatedUtc = entity.CreatedUtc
-        })
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.ProductId == productId)
+            .Select(entity => new OrderListItem
+            {
+                Id = entity.Id,
+                Buyer = entity.Buyer.UserName,
+                Artist = entity.Artist.UserName,
+                Product = entity.Product.Title,
+                CreatedUtc = entity.CreatedUtc.ToString()
+            })
         .ToListAsync();
         return orders;
     }
+
     // public async Task<IEnumerable<OrderListItem>> GetOrdersByPurchaseDateAsync(DateTime createdUtc)
     // {
     //     var orders = await _dbContext.Orders
@@ -99,15 +116,22 @@ public class OrderService : IOrderService
     //     return orders;
     // }
 
-    public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync()
+    //Currently "GetAllOrdersAsync" is pulling by the buyer id passed in. Not all orders in the database as a whole. Our vision is to have the buyer driving the requests. If we were to add another method to pull ALL orders in database, we could do a "GetAllOrdersByAllBuyers"
+    public async Task<IEnumerable<OrderListItem>> GetAllOrdersAsync(int buyerId)
     {
         var orders = await _dbContext.Orders
-        // .Where(entity => entity.BuyerId == _userId)
-        .Select(entity => new OrderListItem
-        {
-            Id = entity.Id,
-            CreatedUtc = entity.CreatedUtc
-        })
+            .Include(x => x.Buyer)
+            .Include(x => x.Artist)
+            .Include(x => x.Product)
+            .Where(entity => entity.BuyerId == buyerId)
+            .Select(entity => new OrderListItem
+            {
+                Id = entity.Id,
+                Buyer = entity.Buyer.UserName,
+                Artist = entity.Artist.UserName,
+                Product = entity.Product.Title,
+                CreatedUtc = entity.CreatedUtc.ToString()
+            })
         .ToListAsync();
         // .AsQueryable() --> may be way to go in future
         return orders;
@@ -138,24 +162,30 @@ public class OrderService : IOrderService
 
     public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
     {
-            //Find the first order that has the given Id and an Owner Id that matches the requesting userId
+        //Find the first order that has the given Id and an Owner Id that matches the requesting userId
         var orderEntity = await _dbContext.Orders
-        .FirstOrDefaultAsync(e =>
-            e.Id == orderId);
+            .Include(x => x.Artist)
+            .Include(x => x.Buyer)
+            .FirstOrDefaultAsync(e =>
+                e.Id == orderId);
+
         return orderEntity is null ? null : new OrderDetail
-        
-        
-        // var OrderEntity = await _dbContext.Orders.FirstOrDefaultAsync(predicate: e=>
-        //     e.Id == orderId && e.BuyerId == buyerId);
+
+
+        //     // var OrderEntity = await _dbContext.Orders.FirstOrDefaultAsync(predicate: e=>
+        //     //     e.Id == orderId && e.BuyerId == buyerId);
 
         // (e => e.Id == orderId && e.ArtistId == artistId);
         //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
 
         {
             Id = orderEntity.Id,
-            Price = orderEntity.Price,
+            BuyerId = orderEntity.BuyerId,
+            BuyerEmail = orderEntity.Buyer.Email,
             ProductId = orderEntity.ProductId,
+            Artist = orderEntity.Artist.UserName,
             // MediaId = orderEntity.MediaId,
+            Price = orderEntity.Price,
             CreatedUtc = orderEntity.CreatedUtc,
             // ModifiedUtc = orderEntity.ModifiedUtc
         };
@@ -175,4 +205,15 @@ public class OrderService : IOrderService
 
     //Could add another helper method here to SearchById or one for SearchByPrice etc for use in other methods
     //This line for a test of git push 
+    public async Task<bool> MarkProductAsSold(int productId)
+    {
+        ProductEntity productSold = await _dbContext.Products.FindAsync(productId);
+        if (productSold != null)
+        {
+            productSold.IsSold = true;
+            var numberOfChanges = await _dbContext.SaveChangesAsync();
+            return numberOfChanges == 1;
+        }
+        return false;
+    }
 }
