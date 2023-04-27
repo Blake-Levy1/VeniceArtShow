@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 public class ProductService : IProductService
 {
-    private int _userId;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    // private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationDbContext _dbContext;
-    public ProductService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+    public ProductService(ApplicationDbContext dbContext)
     {
         
-        _httpContextAccessor = httpContextAccessor;
+        // _httpContextAccessor = httpContextAccessor;
         _dbContext = dbContext;
     }
 
@@ -192,8 +191,6 @@ public class ProductService : IProductService
         return products;
     }
 
-
-
     // private void SetUserId()
     // {
     //     var userClaims = _httpContextAccessor.HttpContext.User.Identity as ClaimsIdentity;
@@ -208,11 +205,4 @@ public class ProductService : IProductService
     //     //     _userId = value;
     //     // }
     // }
-
-//     public static Guid ToGuid(int userId)
-//     {
-//         byte[] bytes = new byte[16];
-//         BitConverter.GetBytes(userId).CopyTo(bytes, 0);
-//         return new Guid(bytes);
-//     }
 }
