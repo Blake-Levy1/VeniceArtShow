@@ -15,6 +15,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+object value = builder.Services.AddAuthorization(options => 
+    {
+        options.AddPolicy("Email", policy =>
+            {
+                policy.RequireClaim("https://admin.veniceart.show", "admin@veniceart.show"
+        );
+            });
+    });        
 builder.Services.AddSwaggerGen(c =>
 {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "VeniceArtShow.WebAPI", Version = "v1" });

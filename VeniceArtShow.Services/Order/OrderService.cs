@@ -160,13 +160,14 @@ public class OrderService : IOrderService
     //     return numberOfChanges == 1;
     // }
 
-    // public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
-    // {
-    //         //Find the first order that has the given Id and an Owner Id that matches the requesting userId
-    //     var orderEntity = await _dbContext.Orders
-    //         .Include(x => x.Artist)
-    //         .FirstOrDefaultAsync(e =>
-    //             e.Id == orderId);
+    public async Task<OrderDetail> GetOrderDetailAsync(int orderId)
+    {
+            //Find the first order that has the given Id and an Owner Id that matches the requesting userId
+        var orderEntity = await _dbContext.Orders
+            .Include(x => x.Artist)
+            .Include(x => x.Buyer)
+            .FirstOrDefaultAsync(e =>
+                e.Id == orderId);
 
     //     return orderEntity is null ? null : new OrderDetail
 
@@ -174,20 +175,21 @@ public class OrderService : IOrderService
     //     // var OrderEntity = await _dbContext.Orders.FirstOrDefaultAsync(predicate: e=>
     //     //     e.Id == orderId && e.BuyerId == buyerId);
 
-    //     // (e => e.Id == orderId && e.ArtistId == artistId);
-    //     //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
+        // (e => e.Id == orderId && e.ArtistId == artistId);
+        //If orderEntity is null then return null, otherwise initialize and return a new OrderDetail
 
-    //     {
-    //         Id = orderEntity.Id,
-    //         BuyerId = orderEntity.BuyerId,
-    //         ProductId = orderEntity.ProductId,
-    //         Artist = orderEntity.Artist.UserName,
-    //         // MediaId = orderEntity.MediaId,
-    //         Price = orderEntity.Price,
-    //         CreatedUtc = orderEntity.CreatedUtc,
-    //         // ModifiedUtc = orderEntity.ModifiedUtc
-    //     };
-    // }
+        {
+            Id = orderEntity.Id,
+            BuyerId = orderEntity.BuyerId,
+            BuyerEmail = orderEntity.Buyer.Email,
+            ProductId = orderEntity.ProductId,
+            Artist = orderEntity.Artist.UserName,
+            // MediaId = orderEntity.MediaId,
+            Price = orderEntity.Price,
+            CreatedUtc = orderEntity.CreatedUtc,
+            // ModifiedUtc = orderEntity.ModifiedUtc
+        };
+    }
 
     public async Task<bool> DeleteOrderAsync(int orderId)
     {
@@ -199,20 +201,5 @@ public class OrderService : IOrderService
         //Remove the Order from the DbContext and asasert that the one change was saved
         _dbContext.Orders.Remove(orderEntity);
         return await _dbContext.SaveChangesAsync() == 1;
-    }
-
-    //Could add another helper method here to SearchById or one for SearchByPrice etc for use in other methods
-    //This line for a test of git push
-
-    public async Task<bool> MarkProductAsSold(int productId)
-    {
-        ProductEntity productSold = await _dbContext.Products.FindAsync(productId);
-        if (productSold != null)
-        {
-            productSold.IsSold = true;
-            var numberOfChanges = await _dbContext.SaveChangesAsync();
-            return numberOfChanges == 1;
-        }
-        return false;
     }
 }

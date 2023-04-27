@@ -13,6 +13,8 @@ public class OrderController : ControllerBase
 {
     private readonly IOrderService _orderService;
     private readonly ITokenService _tokenService;
+    private object _order;
+
     public OrderController(IOrderService orderService, ITokenService tokenService)
     {
         _orderService = orderService;
@@ -93,6 +95,21 @@ public class OrderController : ControllerBase
             }
             return Ok(userDetail);
         }
+    
+        // [Authorize(Policy = "Email")]
+        [HttpGet("OrderDetail/{orderId:int}")]
+        public async  Task<IActionResult> GetOrderDetailAsync([FromRoute]int orderId, [FromBody] OrderDetailAuthorization authEmail)
+        {
+            var orderDetail = await _orderService.GetOrderDetailAsync(orderId);
+            if (authEmail.AuthAdminEmail == "admin@veniceart.show")  
+            {
+                return Ok(orderDetail);
+            }  
+            
+            return BadRequest("You are not authorized to see Order Details.");
+        }
+    
+
         //ByPurchaseDate moved to Stretch Goal to handle peculiarities of Time elements after MVP        // [Authorize]
         // [HttpGet("CreatedUtc")]
         // public async Task<IActionResult> GetOrdersByPurchaseDate([FromBody] DateTime createdUtc)
@@ -104,4 +121,5 @@ public class OrderController : ControllerBase
         //     }
         //     return Ok(userDetail);
         // }
+
     }

@@ -12,7 +12,7 @@ public class OrderEntity
     public DateTime CreatedUtc { get; set; }
     [ForeignKey(nameof(Buyer))]
     public int BuyerId { get; set; }
-    public UserEntity Buyer { get; set; }
+    public virtual UserEntity Buyer { get; set; }
 
     // [ForeignKey(nameof(Media))]
     // public int MediaId { get; set; }

@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
     {
         public int Id { get; set; }
         public int BuyerId { get; set; }
+        public string BuyerEmail { get; set; }
         public int ProductId { get; set; }
         public string Artist { get; set; }
         public double Price { get; set; }
