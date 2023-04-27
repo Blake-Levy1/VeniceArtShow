@@ -174,6 +174,5 @@ public class OrderService : IOrderService
     }
 
     //Could add another helper method here to SearchById or one for SearchByPrice etc for use in other methods
-    //This line for a test of git push
-    //This line for a test of git push, again :)
+    //This line for a test of git push 
 }
