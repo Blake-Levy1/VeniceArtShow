@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VeniceArtShow.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class StillMVP : Migration
+    public partial class GoodMigrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -118,7 +118,10 @@ namespace VeniceArtShow.Data.Migrations
                 values: new object[,]
                 {
                     { 1, "Painting" },
-                    { 2, "Photograph" }
+                    { 2, "Photograph" },
+                    { 3, "Ceramics" },
+                    { 4, "Digital" },
+                    { 5, "Glass" }
                 });
 
             migrationBuilder.InsertData(
@@ -126,8 +129,12 @@ namespace VeniceArtShow.Data.Migrations
                 columns: new[] { "Id", "Biography", "DateCreated", "Email", "FirstName", "LastName", "Password", "UserName" },
                 values: new object[,]
                 {
-                    { 1, "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.", new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2110), "unbricker@efa.org", "Horace", "Greenbottom", "openSesame32211!", "bricksRnotUs" },
-                    { 2, "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.", new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2150), "thingPainter@efa.org", "Holly", "Janedie", "8dj23jdjdj1++", "LotsOfThingsToPaint" }
+                    { 1, "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.", new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5840), "unbricker@veniceart.show", "Horace", "Greenbottom", "openSesame32211!", "bricksRnotUs" },
+                    { 2, "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.", new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5900), "thingPainter@veniceart.show", "Holly", "Janedie", "8dj23jdjdj1++", "LotsOfThingsToPaint" },
+                    { 3, "A Fourth Grade Teacher who loves sunsets and Animal Kingdom art.", new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5910), "artlover4@veniceart.show", "Lorraine", "Lansbury", "password", "artLover4" },
+                    { 4, "'Whenever I go out the people always shout'.", new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5910), "towers4art@veniceart.show", "John", "Jingleheimerschmit", "password", "TowersForArt" },
+                    { 5, "Heir of the famous store, now dabbles in photography.", new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5910), "versaceart@veniceart.show", "L.S.", "Ayres", "password", "VersaceArt" },
+                    { 6, "Loves to go on walks and set up his easel.", new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5920), "bentleyinthehouse@veniceart.show", "Beastly", "Gentle", "password!", "BentleyInTheHouse" }
                 });
 
             migrationBuilder.InsertData(
@@ -135,8 +142,24 @@ namespace VeniceArtShow.Data.Migrations
                 columns: new[] { "Id", "ArtistId", "DateListed", "Description", "ImageUrl", "IsSold", "MediaId", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240), "Painting of Mona Lisa in style of Edward Hopper", "https://effinghamdailynews.com/today", false, 1, 4.9900000000000002, "Nighthawks Nona Lisa" },
-                    { 2, 2, new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240), "A depiction of sound which is like but not the same as that Scream painting by Edward Munch", "https://hollyjanedie.com", false, 2, 40.530000000000001, "Sirens That Make You Scream" }
+                    { 1, 1, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6030), "Painting of Mona Lisa in style of Edward Hopper", "https://effinghamdailynews.com/today", false, 1, 4.9900000000000002, "Nighthawks Nona Lisa" },
+                    { 2, 2, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6030), "A depiction of sound which is like but not the same as that Scream painting by Edward Munch", "https://hollyjanedie.com", false, 2, 40.530000000000001, "Sirens That Make You Scream" },
+                    { 3, 3, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040), "A set of three hand-blown vases.", "www.ikea.com/us/en/cat/vases-10776/", false, 5, 983.33000000000004, "Call It V" },
+                    { 4, 4, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040), "A collection of dreamy sunsets on hazy days.", "https://wallpapers.com", false, 4, 763.83000000000004, "Sunsets to Fall Asleep To" },
+                    { 5, 5, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040), "A sculpture of the three faces of eve.", "https://clevelandmuseumofart.org", false, 3, 73333.0, "Three Faces of Eve" },
+                    { 6, 6, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040), "Color photographs of skiers in Tahoe circa 1964.", "https://andersart.com", false, 2, 400.00999999999999, "On The Tahoe Slopes" },
+                    { 7, 1, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6050), "You already know it. We have it. The Scream painting by Edward Munch", "https://nationalmuseumofoslo", false, 1, 392822.97999999998, "The Scream" },
+                    { 8, 2, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6050), "Vr ripoffs of famous art.", "https://metaverse.com", false, 4, 1000.0, "3D Masters in Virtual Reality" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Orders",
+                columns: new[] { "Id", "ArtistId", "BuyerId", "CreatedUtc", "Price", "ProductId" },
+                values: new object[,]
+                {
+                    { 1, 1, 3, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6060), 4.9900000000000002, 1 },
+                    { 2, 2, 4, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6060), 40.530000000000001, 2 },
+                    { 3, 3, 4, new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6070), 983.33000000000004, 3 }
                 });
 
             migrationBuilder.CreateIndex(

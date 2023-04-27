@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace VeniceArtShow.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230427185122_StillMVP")]
-    partial class StillMVP
+    [Migration("20230427195321_GoodMigrations")]
+    partial class GoodMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,21 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             MediaType = "Photograph"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            MediaType = "Ceramics"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            MediaType = "Digital"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            MediaType = "Glass"
                         });
                 });
 
@@ -85,6 +100,35 @@ namespace VeniceArtShow.Data.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Orders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ArtistId = 1,
+                            BuyerId = 3,
+                            CreatedUtc = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6060),
+                            Price = 4.9900000000000002,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ArtistId = 2,
+                            BuyerId = 4,
+                            CreatedUtc = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6060),
+                            Price = 40.530000000000001,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ArtistId = 3,
+                            BuyerId = 4,
+                            CreatedUtc = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6070),
+                            Price = 983.33000000000004,
+                            ProductId = 3
+                        });
                 });
 
             modelBuilder.Entity("ProductEntity", b =>
@@ -135,7 +179,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             ArtistId = 1,
-                            DateListed = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240),
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6030),
                             Description = "Painting of Mona Lisa in style of Edward Hopper",
                             ImageUrl = "https://effinghamdailynews.com/today",
                             IsSold = false,
@@ -147,13 +191,85 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             ArtistId = 2,
-                            DateListed = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240),
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6030),
                             Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
                             ImageUrl = "https://hollyjanedie.com",
                             IsSold = false,
                             MediaId = 2,
                             Price = 40.530000000000001,
                             Title = "Sirens That Make You Scream"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ArtistId = 3,
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040),
+                            Description = "A set of three hand-blown vases.",
+                            ImageUrl = "www.ikea.com/us/en/cat/vases-10776/",
+                            IsSold = false,
+                            MediaId = 5,
+                            Price = 983.33000000000004,
+                            Title = "Call It V"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ArtistId = 4,
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040),
+                            Description = "A collection of dreamy sunsets on hazy days.",
+                            ImageUrl = "https://wallpapers.com",
+                            IsSold = false,
+                            MediaId = 4,
+                            Price = 763.83000000000004,
+                            Title = "Sunsets to Fall Asleep To"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ArtistId = 5,
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040),
+                            Description = "A sculpture of the three faces of eve.",
+                            ImageUrl = "https://clevelandmuseumofart.org",
+                            IsSold = false,
+                            MediaId = 3,
+                            Price = 73333.0,
+                            Title = "Three Faces of Eve"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ArtistId = 6,
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6040),
+                            Description = "Color photographs of skiers in Tahoe circa 1964.",
+                            ImageUrl = "https://andersart.com",
+                            IsSold = false,
+                            MediaId = 2,
+                            Price = 400.00999999999999,
+                            Title = "On The Tahoe Slopes"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ArtistId = 1,
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6050),
+                            Description = "You already know it. We have it. The Scream painting by Edward Munch",
+                            ImageUrl = "https://nationalmuseumofoslo",
+                            IsSold = false,
+                            MediaId = 1,
+                            Price = 392822.97999999998,
+                            Title = "The Scream"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ArtistId = 2,
+                            DateListed = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(6050),
+                            Description = "Vr ripoffs of famous art.",
+                            ImageUrl = "https://metaverse.com",
+                            IsSold = false,
+                            MediaId = 4,
+                            Price = 1000.0,
+                            Title = "3D Masters in Virtual Reality"
                         });
                 });
 
@@ -201,8 +317,8 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
-                            DateCreated = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2110),
-                            Email = "unbricker@efa.org",
+                            DateCreated = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5840),
+                            Email = "unbricker@veniceart.show",
                             FirstName = "Horace",
                             LastName = "Greenbottom",
                             Password = "openSesame32211!",
@@ -212,12 +328,56 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
-                            DateCreated = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2150),
-                            Email = "thingPainter@efa.org",
+                            DateCreated = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5900),
+                            Email = "thingPainter@veniceart.show",
                             FirstName = "Holly",
                             LastName = "Janedie",
                             Password = "8dj23jdjdj1++",
                             UserName = "LotsOfThingsToPaint"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Biography = "A Fourth Grade Teacher who loves sunsets and Animal Kingdom art.",
+                            DateCreated = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5910),
+                            Email = "artlover4@veniceart.show",
+                            FirstName = "Lorraine",
+                            LastName = "Lansbury",
+                            Password = "password",
+                            UserName = "artLover4"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Biography = "'Whenever I go out the people always shout'.",
+                            DateCreated = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5910),
+                            Email = "towers4art@veniceart.show",
+                            FirstName = "John",
+                            LastName = "Jingleheimerschmit",
+                            Password = "password",
+                            UserName = "TowersForArt"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Biography = "Heir of the famous store, now dabbles in photography.",
+                            DateCreated = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5910),
+                            Email = "versaceart@veniceart.show",
+                            FirstName = "L.S.",
+                            LastName = "Ayres",
+                            Password = "password",
+                            UserName = "VersaceArt"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Biography = "Loves to go on walks and set up his easel.",
+                            DateCreated = new DateTime(2023, 4, 27, 15, 53, 21, 270, DateTimeKind.Local).AddTicks(5920),
+                            Email = "bentleyinthehouse@veniceart.show",
+                            FirstName = "Beastly",
+                            LastName = "Gentle",
+                            Password = "password!",
+                            UserName = "BentleyInTheHouse"
                         });
                 });
 

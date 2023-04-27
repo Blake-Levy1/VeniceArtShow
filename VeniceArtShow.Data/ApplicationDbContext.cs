@@ -201,7 +201,7 @@ public class ApplicationDbContext : DbContext
             DateListed = DateTime.Now,
             MediaId = 4,
         });
-        
+
         modelBuilder.Entity<OrderEntity>().HasData(
         new OrderEntity
         {
@@ -231,14 +231,5 @@ public class ApplicationDbContext : DbContext
             Price = 983.33
         });
     }
-    // {
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     //This looks/feels like a mess says Mike
-    //     //Explanation: modelBuider instance takes an OrderEntity, saying a user/buyer...
-    //     modelBuilder.Entity<OrderEntity>()
-    //     .HasOne(n => n.Buyer)
-    //     .WithMany(p => p.Orders)
-    //     .HasForeignKey(n => n.Id);
-    // }
+   //New seed
 }
