@@ -30,7 +30,8 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed.ToString()
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
 
@@ -48,7 +49,8 @@ public class ProductService : IProductService
             Price = request.Price,
             DateListed = DateTime.Now,
             ArtistId = request.ArtistId,
-            MediaId = request.MediaId
+            MediaId = request.MediaId,
+            IsSold = false
         };
 
         _dbContext.Products.Add(productEntity);
@@ -75,7 +77,8 @@ public class ProductService : IProductService
             MediaType = productEntity.Media.MediaType,
             Description = productEntity.Description,
             Price = productEntity.Price,
-            DateListed = productEntity.DateListed.ToString()
+            DateListed = productEntity.DateListed.ToString(),
+            IsSold = productEntity.IsSold
         };
     }
 
@@ -92,6 +95,7 @@ public class ProductService : IProductService
         productEntity.Description = request.Description;
         productEntity.Price = request.Price;
         productEntity.MediaId = request.MediaId;
+        productEntity.IsSold = request.IsSold;
 
         var numberOfChanges = await _dbContext.SaveChangesAsync();
         return numberOfChanges == 1;
@@ -119,7 +123,8 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed.ToString()
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
@@ -138,7 +143,8 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed.ToString()
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
@@ -159,7 +165,8 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed.ToString()
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
@@ -178,11 +185,14 @@ public class ProductService : IProductService
                 Title = entity.Title,
                 Artist = entity.Artist.UserName,
                 MediaType = entity.Media.MediaType,
-                DateListed = entity.DateListed.ToString()
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
     }
+
+
 
     // private void SetUserId()
     // {

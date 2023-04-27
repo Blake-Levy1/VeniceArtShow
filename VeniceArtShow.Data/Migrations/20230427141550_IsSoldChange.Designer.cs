@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace VeniceArtShow.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230425175516_Restartdatabase")]
-    partial class Restartdatabase
+    [Migration("20230427141550_IsSoldChange")]
+    partial class IsSoldChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,8 @@ namespace VeniceArtShow.Data.Migrations
 
                     b.HasIndex("BuyerId");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("Orders");
                 });
 
@@ -107,6 +109,9 @@ namespace VeniceArtShow.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsSold")
+                        .HasColumnType("bit");
+
                     b.Property<int>("MediaId")
                         .HasColumnType("int");
 
@@ -130,9 +135,10 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             ArtistId = 1,
-                            DateListed = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4870),
+                            DateListed = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3472),
                             Description = "Painting of Mona Lisa in style of Edward Hopper",
                             ImageUrl = "https://effinghamdailynews.com/today",
+                            IsSold = false,
                             MediaId = 1,
                             Price = 4.9900000000000002,
                             Title = "Nighthawks Nona Lisa"
@@ -141,9 +147,10 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             ArtistId = 2,
-                            DateListed = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4870),
+                            DateListed = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3475),
                             Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
                             ImageUrl = "https://hollyjanedie.com",
+                            IsSold = false,
                             MediaId = 2,
                             Price = 40.530000000000001,
                             Title = "Sirens That Make You Scream"
@@ -194,7 +201,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
-                            DateCreated = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4700),
+                            DateCreated = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3244),
                             Email = "unbricker@efa.org",
                             FirstName = "Horace",
                             LastName = "Greenbottom",
@@ -205,7 +212,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
-                            DateCreated = new DateTime(2023, 4, 25, 13, 55, 16, 610, DateTimeKind.Local).AddTicks(4780),
+                            DateCreated = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3296),
                             Email = "thingPainter@efa.org",
                             FirstName = "Holly",
                             LastName = "Janedie",
@@ -216,7 +223,7 @@ namespace VeniceArtShow.Data.Migrations
 
             modelBuilder.Entity("OrderEntity", b =>
                 {
-                    b.HasOne("ProductEntity", "Artist")
+                    b.HasOne("UserEntity", "Artist")
                         .WithMany()
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -228,9 +235,17 @@ namespace VeniceArtShow.Data.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("ProductEntity", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Artist");
 
                     b.Navigation("Buyer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ProductEntity", b =>
