@@ -25,4 +25,5 @@ public class ProductEntity
     [ForeignKey(nameof(Media))]
     public int MediaId { get; set; }
     public virtual MediaEntity Media { get; set; }
+    public bool IsSold { get; set; }
 }

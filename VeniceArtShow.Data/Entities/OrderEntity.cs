@@ -27,6 +27,7 @@ public class OrderEntity
     public virtual UserEntity Artist { get; set; }
     [Required]
     public double Price { get; set; }
+
     // List containing all works
     // Perhaps not needed
     // public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();
