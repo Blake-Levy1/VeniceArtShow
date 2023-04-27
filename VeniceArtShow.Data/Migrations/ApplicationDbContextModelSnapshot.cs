@@ -132,7 +132,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             ArtistId = 1,
-                            DateListed = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3472),
+                            DateListed = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240),
                             Description = "Painting of Mona Lisa in style of Edward Hopper",
                             ImageUrl = "https://effinghamdailynews.com/today",
                             IsSold = false,
@@ -144,7 +144,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             ArtistId = 2,
-                            DateListed = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3475),
+                            DateListed = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2240),
                             Description = "A depiction of sound which is like but not the same as that Scream painting by Edward Munch",
                             ImageUrl = "https://hollyjanedie.com",
                             IsSold = false,
@@ -198,7 +198,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 1,
                             Biography = "Retired from a life fishing along the Mississippi, Horace began his unique sandbar drawings and they quiclky became popular on Instagram.",
-                            DateCreated = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3244),
+                            DateCreated = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2110),
                             Email = "unbricker@efa.org",
                             FirstName = "Horace",
                             LastName = "Greenbottom",
@@ -209,7 +209,7 @@ namespace VeniceArtShow.Data.Migrations
                         {
                             Id = 2,
                             Biography = "Holly, a friend of Go Lightly, decided one day to aim her Hollywood lights at 3 mirrors. The rest is history.",
-                            DateCreated = new DateTime(2023, 4, 27, 10, 15, 49, 889, DateTimeKind.Local).AddTicks(3296),
+                            DateCreated = new DateTime(2023, 4, 27, 14, 51, 22, 391, DateTimeKind.Local).AddTicks(2150),
                             Email = "thingPainter@efa.org",
                             FirstName = "Holly",
                             LastName = "Janedie",
