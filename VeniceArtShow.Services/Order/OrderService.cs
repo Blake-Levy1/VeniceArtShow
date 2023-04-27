@@ -169,7 +169,7 @@ public class OrderService : IOrderService
             .FirstOrDefaultAsync(e =>
                 e.Id == orderId);
 
-    //     return orderEntity is null ? null : new OrderDetail
+        return orderEntity is null ? null : new OrderDetail
 
 
     //     // var OrderEntity = await _dbContext.Orders.FirstOrDefaultAsync(predicate: e=>
