@@ -14,10 +14,6 @@ public class OrderEntity
     public int BuyerId { get; set; }
     public virtual UserEntity Buyer { get; set; }
 
-    // [ForeignKey(nameof(Media))]
-    // public int MediaId { get; set; }
-    // public virtual MediaEntity Media { get; set; }
-
     [ForeignKey(nameof(ProductId))]
     public int ProductId { get; set; }
     public virtual ProductEntity Product { get; set; }
@@ -32,6 +28,10 @@ public class OrderEntity
     // Perhaps not needed
     // public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();
 
-    // // List containing all users
+    // List containing all users
     // public virtual List<UserEntity> Owners { get; set; } = new List<UserEntity>();
+
+    // [ForeignKey(nameof(Media))]
+    // public int MediaId { get; set; }
+    // public virtual MediaEntity Media { get; set; }
 }

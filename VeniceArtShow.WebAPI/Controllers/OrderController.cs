@@ -31,19 +31,6 @@ public class OrderController : ControllerBase
 
         return BadRequest("Order could not be created.");
     }
-
-    // // PUT api/Order
-    // [HttpPut("{orderId:int}")]
-    // public async Task<IActionResult> UpdateOrderById([FromBody] OrderUpdate request)
-    // {
-    //     if (!ModelState.IsValid)
-    //         return BadRequest(ModelState);
-
-    //     return await _orderService.UpdateOrderAsync(request)
-    //         ? Ok("Order updated successfullly.")
-    //         : BadRequest("The Order could not be updated.");
-    // }
-
     //Get api/Order
     [HttpGet("GetAll")]
     public async Task<IActionResult> GetAllOrders([FromBody] int buyerId)
@@ -73,53 +60,51 @@ public class OrderController : ControllerBase
             return NotFound();
         }
         return Ok(userDetail);
-        }
-        // [Authorize]
-        [HttpGet("ProductId")]
-        public async Task<IActionResult> GetOrdersByProductIdAsync([FromBody] int productId)
-        {
-            var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
-            if (userDetail is null)
-            {
-                return BadRequest("Order not found. (Chaos results.)");
-            }
-            return Ok(userDetail);
-        }
-        [HttpGet("OrderId")]  
-        public async Task<IActionResult> GetOrdersByOrderIdAsync([FromBody] int orderId)
-        {
-            var userDetail = await _orderService.GetOrdersByOrderIdAsync(orderId);
-            if (userDetail is null)
-            {
-                return BadRequest("Order not found. (Chaos results.)");
-            }
-            return Ok(userDetail);
-        }
-    
-        // [Authorize(Policy = "Email")]
-        [HttpGet("OrderDetail/{orderId:int}")]
-        public async  Task<IActionResult> GetOrderDetailAsync([FromRoute]int orderId, [FromBody] OrderDetailAuthorization authEmail)
-        {
-            var orderDetail = await _orderService.GetOrderDetailAsync(orderId);
-            if (authEmail.AuthAdminEmail == "admin@veniceart.show")  
-            {
-                return Ok(orderDetail);
-            }  
-            
-            return BadRequest("You are not authorized to see Order Details.");
-        }
-    
-
-        //ByPurchaseDate moved to Stretch Goal to handle peculiarities of Time elements after MVP        // [Authorize]
-        // [HttpGet("CreatedUtc")]
-        // public async Task<IActionResult> GetOrdersByPurchaseDate([FromBody] DateTime createdUtc)
-        // {
-        //     var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
-        //     if (userDetail is null)
-        //     {
-        //         return NotFound();
-        //     }
-        //     return Ok(userDetail);
-        // }
-
     }
+    // [Authorize]
+    [HttpGet("ProductId")]
+    public async Task<IActionResult> GetOrdersByProductIdAsync([FromBody] int productId)
+    {
+        var userDetail = await _orderService.GetOrdersByProductIdAsync(productId);
+        if (userDetail is null)
+        {
+            return BadRequest("Order not found. (Chaos results.)");
+        }
+        return Ok(userDetail);
+    }
+    [HttpGet("OrderId")]
+    public async Task<IActionResult> GetOrdersByOrderIdAsync([FromBody] int orderId)
+    {
+        var userDetail = await _orderService.GetOrdersByOrderIdAsync(orderId);
+        if (userDetail is null)
+        {
+            return BadRequest("Order not found. (Chaos results.)");
+        }
+        return Ok(userDetail);
+    }
+
+    // [Authorize(Policy = "Email")]
+    [HttpGet("OrderDetail/{orderId:int}")]
+    public async Task<IActionResult> GetOrderDetailAsync([FromRoute] int orderId, [FromBody] OrderDetailAuthorization authEmail)
+    {
+        var orderDetail = await _orderService.GetOrderDetailAsync(orderId);
+        if (authEmail.AuthAdminEmail == "admin@veniceart.show")
+        {
+            return Ok(orderDetail);
+        }
+        return BadRequest("You are not authorized to see Order Details.");
+    }
+
+    //SearchByPurchaseDate moved to Stretch Goal to handle peculiarities of Time elements after MVP        
+    // [HttpGet("CreatedUtc")]
+    // public async Task<IActionResult> GetOrdersByPurchaseDate([FromBody] DateTime createdUtc)
+    // {
+    //     var userDetail = await _orderService.GetOrdersByPurchaseDateAsync(createdUtc);
+    //     if (userDetail is null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     return Ok(userDetail);
+    // }
+
+}

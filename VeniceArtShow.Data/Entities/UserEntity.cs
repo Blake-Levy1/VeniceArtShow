@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 
 // CONSIDER: changing 'user' to 'owner'
-// Note in Version 1 is is assumed all users are owners. 
-// In Version 2+ might distinguish between owners and makers
+// Note in Version 1 MVP it is assumed all users are owners; orders created by buyers. 
+// In Version 2+ might distinguish between owners, makers, artists, art-lovers and add admin.
 public class UserEntity
 {
     [Key]
@@ -22,9 +22,9 @@ public class UserEntity
     [Required]
     public DateTime DateCreated { get; set; }
 
-    // Following 14.03 under 'UserEntity'
-    // List containing all works
+    // Set up following 14.03 under 'UserEntity'; discontinued.
+    // The following instatiates a list containing all Media
     // public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();
-    // // List containing all orders
+    // The following instatiates a lits containing all Orders
     // public virtual  List<OrderEntity> Orders {get; set; } = new List<OrderEntity>();
 }
