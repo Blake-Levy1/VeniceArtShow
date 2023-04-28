@@ -19,10 +19,9 @@ public class ProductUpdate
     [MaxLength(8000, ErrorMessage = "{0} must contain no more than {1} characters.")]
     public string Description { get; set; }
     [Required]
-    public double Price { get; set; }
+    public string Price { get; set; }
     [Required]
     public int ArtistId { get; set; }
     [Required]
     public int MediaId { get; set; }
-    public bool IsSold { get; set; }
 }
