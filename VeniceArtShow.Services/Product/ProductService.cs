@@ -84,6 +84,7 @@ public class ProductService : IProductService
     public async Task<bool> UpdateProductAsync (ProductUpdate request)
     {
         // SetUserId();
+        double priceAsDouble = Convert.ToDouble(request.Price);
         var productEntity = await _dbContext.Products.FindAsync(request.Id);
 
         if (productEntity?.ArtistId != request.ArtistId)
@@ -92,10 +93,9 @@ public class ProductService : IProductService
         productEntity.Title = request.Title;
         productEntity.ImageUrl = request.ImageUrl;
         productEntity.Description = request.Description;
-        productEntity.Price = request.Price;
+        productEntity.Price = priceAsDouble;
         productEntity.MediaId = request.MediaId;
-        productEntity.IsSold = request.IsSold;
-
+        
         var numberOfChanges = await _dbContext.SaveChangesAsync();
         return numberOfChanges == 1;
     }
