@@ -24,4 +24,5 @@ public class ProductUpdate
     public int ArtistId { get; set; }
     [Required]
     public int MediaId { get; set; }
+    public bool IsSold { get; set; }
 }

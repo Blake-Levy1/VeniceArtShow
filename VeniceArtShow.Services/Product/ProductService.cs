@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 public class ProductService : IProductService
 {
-    private int _userId;
-    private readonly IHttpContextAccessor _httpContextAccessor;
+    // private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ApplicationDbContext _dbContext;
-    public ProductService(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+    public ProductService(ApplicationDbContext dbContext)
     {
         
-        _httpContextAccessor = httpContextAccessor;
+        // _httpContextAccessor = httpContextAccessor;
         _dbContext = dbContext;
     }
 
@@ -22,12 +21,16 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
-            // .Where(entity => entity.ArtistId == _userId)
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
 
@@ -45,7 +48,8 @@ public class ProductService : IProductService
             Price = request.Price,
             DateListed = DateTime.Now,
             ArtistId = request.ArtistId,
-            MediaId = request.MediaId
+            MediaId = request.MediaId,
+            IsSold = false
         };
 
         _dbContext.Products.Add(productEntity);
@@ -54,10 +58,12 @@ public class ProductService : IProductService
         return numberOfChanges == 1;
     }
 
-    public async Task<ProductDetail> GetProductByIdAsync(int productId)
+    public async Task<ProductDetail?> GetProductByIdAsync(int productId)
     {
         // SetUserId();
-        var productEntity = await _dbContext.Products.Include(x => x.Media)
+        var productEntity = await _dbContext.Products
+            .Include(x => x.Media)
+            .Include(x => x.Artist)
             .FirstOrDefaultAsync(e =>
                 e.Id == productId);
 
@@ -65,12 +71,13 @@ public class ProductService : IProductService
         {
             Id = productEntity.Id,
             Title = productEntity.Title,
+            Artist = productEntity.Artist.UserName,
             ImageUrl = productEntity.ImageUrl,
+            MediaType = productEntity.Media.MediaType,
             Description = productEntity.Description,
             Price = productEntity.Price,
-            DateListed = DateTime.Now,
-            MediaId = productEntity.MediaId
-            // Media = productEntity.Media
+            DateListed = productEntity.DateListed.ToString(),
+            IsSold = productEntity.IsSold
         };
     }
 
@@ -87,6 +94,7 @@ public class ProductService : IProductService
         productEntity.Description = request.Description;
         productEntity.Price = request.Price;
         productEntity.MediaId = request.MediaId;
+        productEntity.IsSold = request.IsSold;
 
         var numberOfChanges = await _dbContext.SaveChangesAsync();
         return numberOfChanges == 1;
@@ -105,12 +113,17 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.Title == productTitle)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
@@ -120,12 +133,17 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.MediaId == mediaId)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
@@ -137,12 +155,17 @@ public class ProductService : IProductService
         double lowPrice = Convert.ToDouble(search.LowPrice);
         double highPrice = Convert.ToDouble(search.HighPrice);
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.Price >= lowPrice && entity.Price <= highPrice)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
@@ -152,12 +175,17 @@ public class ProductService : IProductService
     {
         // SetUserId();
         var products = await _dbContext.Products
+            .Include(x => x.Artist)
+            .Include(x => x.Media)
             .Where(entity => entity.ArtistId == artistId)
             .Select(entity => new ProductListItem
             {
                 Id = entity.Id,
                 Title = entity.Title,
-                DateListed = entity.DateListed
+                Artist = entity.Artist.UserName,
+                MediaType = entity.Media.MediaType,
+                DateListed = entity.DateListed.ToString(),
+                IsSold = entity.IsSold
             })
             .ToListAsync();
         return products;
@@ -177,11 +205,4 @@ public class ProductService : IProductService
     //     //     _userId = value;
     //     // }
     // }
-
-//     public static Guid ToGuid(int userId)
-//     {
-//         byte[] bytes = new byte[16];
-//         BitConverter.GetBytes(userId).CopyTo(bytes, 0);
-//         return new Guid(bytes);
-//     }
 }
