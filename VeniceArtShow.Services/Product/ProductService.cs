@@ -58,7 +58,7 @@ public class ProductService : IProductService
         return numberOfChanges == 1;
     }
 
-    public async Task<ProductDetail> GetProductByIdAsync(int productId)
+    public async Task<ProductDetail?> GetProductByIdAsync(int productId)
     {
         // SetUserId();
         var productEntity = await _dbContext.Products
