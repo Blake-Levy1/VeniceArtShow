@@ -123,6 +123,7 @@ public class ApplicationDbContext : DbContext
             Price = 4.99,
             DateListed = DateTime.Now,
             MediaId = 1,
+            IsSold = false
         },
         new ProductEntity
         {
@@ -134,6 +135,7 @@ public class ApplicationDbContext : DbContext
             Price = 40.53,
             DateListed = DateTime.Now,
             MediaId = 2,
+            IsSold = false
         },
         new ProductEntity
         {
@@ -145,6 +147,7 @@ public class ApplicationDbContext : DbContext
             Price = 983.33,
             DateListed = DateTime.Now,
             MediaId = 5,
+            IsSold = false
         },
         new ProductEntity
         {
@@ -156,6 +159,7 @@ public class ApplicationDbContext : DbContext
             Price = 763.83,
             DateListed = DateTime.Now,
             MediaId = 4,
+            IsSold = false
         },
         new ProductEntity
         {
@@ -167,6 +171,7 @@ public class ApplicationDbContext : DbContext
             Price = 73333.00,
             DateListed = DateTime.Now,
             MediaId = 3,
+            IsSold = false
         },
         new ProductEntity
         {
@@ -178,6 +183,7 @@ public class ApplicationDbContext : DbContext
             Price = 400.01,
             DateListed = DateTime.Now,
             MediaId = 2,
+            IsSold = false
         },
         new ProductEntity
         {
@@ -189,6 +195,7 @@ public class ApplicationDbContext : DbContext
             Price = 392822.98,
             DateListed = DateTime.Now,
             MediaId = 1,
+            IsSold = false
         },
         new ProductEntity
         {
@@ -200,6 +207,7 @@ public class ApplicationDbContext : DbContext
             Price = 1000.00,
             DateListed = DateTime.Now,
             MediaId = 4,
+            IsSold = false
         });
 
         modelBuilder.Entity<OrderEntity>().HasData(

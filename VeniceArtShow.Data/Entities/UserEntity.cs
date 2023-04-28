@@ -21,10 +21,4 @@ public class UserEntity
     public string Biography { get; set; }
     [Required]
     public DateTime DateCreated { get; set; }
-
-    // Set up following 14.03 under 'UserEntity'; discontinued.
-    // The following instatiates a list containing all Media
-    // public virtual List<MediaEntity> Artworks { get; set; } = new List<MediaEntity>();
-    // The following instatiates a lits containing all Orders
-    // public virtual  List<OrderEntity> Orders {get; set; } = new List<OrderEntity>();
 }

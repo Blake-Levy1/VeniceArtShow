@@ -15,7 +15,7 @@ public class UserRegister
     public string Email { get; set; }
     [Required]
     public string Password{ get; set; }
-    [Compare("Password", ErrorMessage = "Password does not match. What are you having a bad typing day?")]
+    [Compare("Password", ErrorMessage = "Password does not match, try again")]
     public string ConfirmPassword { get; set; }
     public string Biography { get; set; }
 }

@@ -62,6 +62,7 @@ public class UserController : ControllerBase
         : BadRequest($"User {id} could not be deleted.");
     }
 
+
     [HttpPost("Token")]
     public async Task<IActionResult> Token([FromBody] TokenRequest request)
     {

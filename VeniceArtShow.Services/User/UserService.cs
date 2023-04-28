@@ -27,7 +27,7 @@ public class UserService : IUserService
             Biography = model.Biography,
             DateCreated = DateTime.Now
         };
-
+        // HashPassword a property of Microsoft.AspNetCore.Identity
         var passwordHasher = new PasswordHasher<UserEntity>();
         entity.Password = passwordHasher.HashPassword(entity, model.Password);
 
@@ -91,6 +91,8 @@ public class UserService : IUserService
         return await _dbContext.SaveChangesAsync() == 1;
     }
 
+
+//Helper Methods below for Registering a new user --> checks for no double emails or usernames
 private async Task<UserEntity> GetUserByEmailAsync(string email)
 {
     return await _dbContext.Users.FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
