@@ -144,7 +144,7 @@ public class OrderService : IOrderService
         return false;
     }
 
-    // It was decided not to allow for Order Updates.
+    // It was decided not to allow for Order Updates. They would be deleted instead.
     // public async Task<bool> UpdateOrderAsync(OrderUpdate request)
     // {
     //     //Find the Order and validate it's owned by the user
